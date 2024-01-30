@@ -1,9 +1,8 @@
-package com.example.coursework
+package com.example.coursework.fragments.add
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.coursework.R
 import com.example.coursework.data.ClothesViewModel
 import com.example.coursework.data.ClothingItem
 
@@ -33,11 +33,13 @@ class AddFragment : Fragment() {
 
         mClothingItemView = ViewModelProvider(this).get(ClothesViewModel::class.java)
 
+        //По нажатии на imageButton пользователь выбирает изображение
         imageButton = view.findViewById(R.id.add_imageButton)
         imageButton.setOnClickListener {
             openGalleryForImage()
         }
 
+        //По нажатии на add_add_button происходит добавление в базу данных
         view.findViewById<Button>(R.id.add_add_button).setOnClickListener {
             insertDataToDatabase(view)
         }
