@@ -1,0 +1,25 @@
+package com.example.coursework.data
+
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+
+/*
+*   Dao - Data Access Object
+*   Содержит методы для доступа к базе данных
+*/
+
+@Dao
+interface ClothesDao {
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addClothingItem(clothingItem: ClothingItem)
+
+    @Query("SELECT * FROM Clothing_item ORDER BY id ")
+    fun getClothingItemsSortedById():LiveData<List<ClothingItem>>
+
+    @Query("SELECT * FROM Clothing_item ORDER BY title ASC ")
+    fun getClothingItemsSortedByTitle():LiveData<List<ClothingItem>>
+}
