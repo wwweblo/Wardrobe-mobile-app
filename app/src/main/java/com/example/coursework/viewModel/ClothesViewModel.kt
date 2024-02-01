@@ -1,9 +1,12 @@
-package com.example.coursework.data
+package com.example.coursework.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.coursework.data.ClothesDatabase
+import com.example.coursework.repository.ClothesRepository
+import com.example.coursework.model.ClothingItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -33,12 +36,14 @@ class ClothesViewModel(application: Application): AndroidViewModel(application) 
     }
 
     fun addClothingItem(clothingItem: ClothingItem){
-        /*
-        *   viewModelScope - для многопоточности
-        *   Dispatchers.IO - запускает в фоновом потоке
-        */
         viewModelScope.launch(Dispatchers.IO) {
             repository.addClothingItem(clothingItem)
+        }
+    }
+
+    fun updateClothingItem(clothingItem: ClothingItem){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateClothingItem(clothingItem)
         }
     }
 

@@ -1,6 +1,8 @@
-package com.example.coursework.data
+package com.example.coursework.repository
 
 import androidx.lifecycle.LiveData
+import com.example.coursework.data.ClothesDao
+import com.example.coursework.model.ClothingItem
 
 /*
 *   Репозиторий - класс, который предоставляет достум к нескольким източникам данных
@@ -14,4 +16,7 @@ class ClothesRepository(private val dao: ClothesDao) {
         dao.addClothingItem(clothingItem)
     }
 
+    suspend fun updateClothingItem(clothingItem: ClothingItem){
+        dao.updateClothingItem(clothingItem)
+    }
 }

@@ -5,6 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
+import com.example.coursework.model.ClothingItem
 
 /*
 *   Dao - Data Access Object
@@ -17,6 +19,8 @@ interface ClothesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addClothingItem(clothingItem: ClothingItem)
 
+    @Update
+    suspend fun updateClothingItem(clothingItem: ClothingItem)
     @Query("SELECT * FROM Clothing_item ORDER BY id ")
     fun getClothingItemsSortedById():LiveData<List<ClothingItem>>
 

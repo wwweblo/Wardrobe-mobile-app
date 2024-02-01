@@ -1,8 +1,16 @@
 package com.example.coursework.fragments.add
 
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +20,22 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.coursework.R
-import com.example.coursework.data.ClothesViewModel
-import com.example.coursework.data.ClothingItem
+import com.example.coursework.viewModel.ClothesViewModel
+import com.example.coursework.model.ClothingItem
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class AddFragment : Fragment() {
 
     private lateinit var mClothingItemView: ClothesViewModel
     private lateinit var imageButton: ImageButton
-    private var imagePath: String? = null // Переменная для хранения пути к изображению
+    private val IMAGE_DIRECTORY = "ClothingImages"
+    private var currentImagePath: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +46,7 @@ class AddFragment : Fragment() {
 
         mClothingItemView = ViewModelProvider(this).get(ClothesViewModel::class.java)
 
-        //По нажатии на imageButton пользователь выбирает изображение
+        // По нажатии на add_imageButton пользователь выбирает изображение
         imageButton = view.findViewById(R.id.add_imageButton)
         imageButton.setOnClickListener {
             openGalleryForImage()
@@ -47,79 +60,197 @@ class AddFragment : Fragment() {
         return view
     }
 
+    /**
+     * Открывает галерею для выбора изображения.
+     */
     private fun openGalleryForImage() {
-        /*
-        *   Создаем intent для открытия изображений на устройстве
-        *   и запускаетм для получения результата
-        */
+        // Создаем intent для открытия изображений на устройстве
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         resultLauncher.launch(intent)
     }
 
-    /*
-    *   Создается переменная resultLauncher, которая является экземпляром ActivityResultLauncher,
-    *   созданного с использованием ActivityResultContracts.StartActivityForResult().
-    *   Он обрабатывает результат запуска активности для результата.
-    *
-    *   Если результат положительный, то из результата intent берется изображение
-    *   и извлекается его url. На imageButton ставится изображение по полученному url,
-    *   а imagePath принимает значение url
-    */
+    /**
+     * Обработчик результата выбора изображения из галереи.
+     */
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
+        // Проверяем, что результат успешен
         if (result.resultCode == Activity.RESULT_OK) {
+            // Получаем данные из результата
             val data: Intent? = result.data
-            data?.data?.let { selectedImage ->
-                imageButton.setImageURI(selectedImage)
-                imagePath = selectedImage.path
-                //showToast("Путь к изображению: $imagePath")
+            data?.data?.let { uri ->
+                try {
+                    // Сохраняем изображение в базу данных и получаем путь к сохраненному файлу
+                    currentImagePath = saveImageToDatabase(uri)
+
+                    // Проверяем, что путь не null, и загружаем изображение на кнопку
+                    currentImagePath?.let { path ->
+                        SetImageToImageButton(path)
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
             }
         }
-
     }
 
-    private fun insertDataToDatabase(view: View) {
-        //Получаем заполнение из editTextов
-        val title = view.findViewById<EditText>(R.id.add_title_imput).text.toString()
-        val season = view.findViewById<EditText>(R.id.add_season_imput).text.toString()
-        val description = view.findViewById<EditText>(R.id.add_descriptlion_imput).text.toString()
 
-        //Если title не null одбавляем clothingItem
-        if (EmptyStringCheck(title)){
+    /**
+     * Сохраняет изображение в базе данных и возвращает путь к сохраненному файлу.
+     *
+     * @param uri Uri изображения, которое нужно сохранить.
+     * @return Путь к сохраненному изображению.
+     * @throws IOException Если произошла ошибка при обработке ввода/вывода.
+     */
+    @Throws(IOException::class)
+    private fun saveImageToDatabase(uri: Uri): String {
+        // Открываем поток ввода для изображения
+        val inputStream = requireActivity().contentResolver.openInputStream(uri)
+
+        // Проверяем, что поток ввода не null
+        inputStream?.use {
+            // Декодируем изображение из потока ввода
+            val selectedImageBitmap = BitmapFactory.decodeStream(it)
+
+            // Создаем папку, если ее нет
+            val storageDir = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), IMAGE_DIRECTORY)
+            if (!storageDir.exists()) {
+                storageDir.mkdirs()
+            }
+
+            // Создаем временный файл для изображения
+            val imageFile = File.createTempFile("IMG_", ".jpg", storageDir)
+
+            // Сохраняем выбранное изображение в файл
+            val outputStream = FileOutputStream(imageFile)
+            selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.close()
+
+
+            // Возвращаем путь к сохраненному изображению
+            return imageFile.absolutePath
+        } ?: throw IOException("Input stream is null")
+    }
+
+    /**
+     * Загружает изображение из указанного пути и устанавливает его на кнопку.
+     *
+     * @param imagePath Путь к изображению.
+     */
+    private fun SetImageToImageButton(imagePath: String) {
+        // Создаем объект File для указанного пути
+        val imageFile = File(imagePath)
+
+        // Проверяем, существует ли файл по указанному пути
+        if (imageFile.exists()) {
+            // Если файл существует, декодируем изображение и устанавливаем его на кнопку
+            val imageBitmap = BitmapFactory.decodeFile(imagePath)
+            imageButton.setImageBitmap(imageBitmap)
+        } else {
+            // Если файл отсутствует, показываем сообщение об ошибке
+            showToast(R.string.missed_image_error.toString())
+        }
+    }
+
+    /**
+     * Вставляет данные в базу данных, используя значения из полей ввода на экране.
+     *
+     * @param view Представление фрагмента.
+     */
+    private fun insertDataToDatabase(view: View) {
+        // Получаем значения из полей ввода
+        val title = view.findViewById<EditText>(R.id.add_title_input).text.toString()
+        val season = view.findViewById<EditText>(R.id.add_season_input).text.toString()
+        val description = view.findViewById<EditText>(R.id.add_description_input).text.toString()
+
+        // Если title не null и не является пустым, добавляем clothingItem
+        if (emptyStringCheck(title)) {
+            // Создаем объект ClothingItem с полученными значениями
             val clothingItem = ClothingItem(
                 id = 0,
-                image = imagePath,
+                image = currentImagePath!!,
                 title = title,
                 season = season,
                 description = description
             )
+
+            // Добавляем clothingItem в базу данных
             mClothingItemView.addClothingItem(clothingItem)
+
+            // Отображаем уведомление об успешном добавлении
             showToast(R.string.on_added_message.toString())
 
-            //После добавления пользователя перенаправляет на list
+            // После добавления пользователя перенаправляем на экран списка
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
-        } else{
+        } else {
+            // Если title пуст или null, показываем ошибку
             showToast(R.string.empty_title_error.toString())
         }
     }
 
-    fun EmptyStringCheck(vararg strings: String?): Boolean {
-        /*
-        *   Метод принимает неограниченное количество строк,
-        *   представленных в виде массива vararg strings: String?.
-        *   Затем он проверяет каждую строку на null в цикле
-        */
+
+    private fun showToast(message: String?) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Проверяет, что переданные строки не являются null и не являются пустыми или состоят только из пробелов.
+     *
+     * @param strings Набор строк, которые нужно проверить.
+     * @return true, если все строки не являются null и не являются пустыми или состоят только из пробелов, иначе false.
+     */
+    private fun emptyStringCheck(vararg strings: String?): Boolean {
+        // Проверяем каждую строку
         for (str in strings) {
-            if (str == null) {
+            // Если строка null или пуста, возвращаем false
+            if (str == null || str.isBlank()) {
                 return false
             }
         }
+        // Если все строки прошли проверку, возвращаем true
         return true
     }
 
 
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    /**
+     * Отображает уведомление в системе Android.
+     *
+     * @param message Сообщение, которое будет отображено в уведомлении.
+     */
+    private fun showNotification(message: String) {
+        // Получаем менеджер уведомлений
+        val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Создаем канал уведомлений для Android 8 (Oreo) и выше
+            val channelId = "Your_Channel_ID"
+            val channel = NotificationChannel(
+                channelId,
+                "Your_Channel_Name",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+
+            // Строим уведомление
+            val notification = NotificationCompat.Builder(requireContext(), channelId)
+                .setContentTitle("Изображение сохранено")
+                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_notification)
+                .build()
+
+            // Отображаем уведомление
+            notificationManager.notify(1, notification)
+        } else {
+            // Для версий Android ниже 8 (Oreo) строим уведомление без использования канала
+            val notification = NotificationCompat.Builder(requireContext())
+                .setContentTitle("Изображение сохранено")
+                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_notification)
+                .build()
+
+            // Отображаем уведомление
+            notificationManager.notify(1, notification)
+        }
     }
+
 }

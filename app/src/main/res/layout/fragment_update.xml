@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/add_imageButton"
+            android:id="@+id/update_imageButton"
             android:layout_width="215dp"
             android:layout_height="215dp"
             android:layout_margin="16dp"
@@ -30,7 +30,7 @@
     </androidx.cardview.widget.CardView>
 
     <EditText
-        android:id="@+id/add_title_input"
+        android:id="@+id/update_title_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/update_imageButton_cardView" />
 
     <EditText
-        android:id="@+id/add_season_input"
+        android:id="@+id/update_season_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -53,10 +53,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_title_input" />
+        app:layout_constraintTop_toBottomOf="@+id/update_title_input" />
 
     <EditText
-        android:id="@+id/add_description_input"
+        android:id="@+id/update_description_input"
         android:layout_width="210dp"
         android:layout_height="169dp"
         android:layout_marginTop="5dp"
@@ -67,19 +67,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_season_input" />
+        app:layout_constraintTop_toBottomOf="@+id/update_season_input" />
 
     <Button
-        android:id="@+id/add_add_button"
-        android:layout_width="116dp"
-        android:layout_height="59dp"
+        android:id="@+id/update_update_button"
+        android:layout_width="131dp"
+        android:layout_height="53dp"
         android:layout_marginTop="38dp"
         android:backgroundTint="@color/blue"
-        android:text="Add"
+        android:text="Update"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_description_input" />
+        app:layout_constraintTop_toBottomOf="@+id/update_description_input" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
