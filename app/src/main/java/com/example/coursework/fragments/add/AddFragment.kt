@@ -168,7 +168,7 @@ class AddFragment : Fragment() {
             // Создаем объект ClothingItem с полученными значениями
             val clothingItem = ClothingItem(
                 id = 0,
-                image = currentImagePath!!,
+                image = currentImagePath,
                 title = title,
                 season = season,
                 description = description
