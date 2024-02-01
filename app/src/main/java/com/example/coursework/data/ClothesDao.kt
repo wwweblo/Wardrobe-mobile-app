@@ -2,6 +2,7 @@ package com.example.coursework.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,6 +20,11 @@ interface ClothesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addClothingItem(clothingItem: ClothingItem)
 
+    @Delete
+    suspend fun deleteClothingItem(clothingItem: ClothingItem)
+
+    @Query("DELETE FROM Clothing_item")
+    suspend fun deleteEveryClothingItem()
     @Update
     suspend fun updateClothingItem(clothingItem: ClothingItem)
     @Query("SELECT * FROM Clothing_item ORDER BY id ")

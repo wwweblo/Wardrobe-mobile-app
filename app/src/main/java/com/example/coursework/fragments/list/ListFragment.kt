@@ -1,5 +1,6 @@
 package com.example.coursework.fragments.list
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -44,6 +45,7 @@ class ListFragment : Fragment() {
 
         return view
     }
+
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }

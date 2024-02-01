@@ -1,6 +1,7 @@
 package com.example.coursework.fragments.update
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -22,6 +23,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.coursework.R
 import com.example.coursework.model.ClothingItem
 import com.example.coursework.viewModel.ClothesViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -34,6 +36,7 @@ class UpdateFregment : Fragment() {
     private lateinit var seasonInput: EditText
     private lateinit var descriptionInput: EditText
     private lateinit var updateButton: Button
+    private lateinit var deleteButton: FloatingActionButton
 
     private val args by navArgs<UpdateFregmentArgs>()
     private lateinit var mClothingItemView: ClothesViewModel
@@ -55,6 +58,7 @@ class UpdateFregment : Fragment() {
         seasonInput = view.findViewById(R.id.update_season_input)
         descriptionInput = view.findViewById(R.id.update_description_input)
         updateButton = view.findViewById(R.id.update_update_button)
+        deleteButton = view.findViewById(R.id.update_delete_button)
 
         //Установка значаний из базы данных
         val imagePath = args.currentClothingItem.image
@@ -71,7 +75,30 @@ class UpdateFregment : Fragment() {
             updateItem()
         }
 
+        deleteButton.setOnClickListener{
+            deleteItem()
+        }
+
         return view
+    }
+
+
+    private fun deleteItem() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Yes"){_,_ ->
+            finnalydeleteItem()
+        }
+        builder.setNegativeButton("No"){_,_ -> }
+        builder.setTitle("Delete ${args.currentClothingItem.title}?")
+        builder.setMessage("Are you shure you want to delete ${args.currentClothingItem.title}?")
+        builder.create().show()
+    }
+    private fun finnalydeleteItem() {
+
+        mClothingItemView.deleteClothingItem(args.currentClothingItem)
+        showToast(getString(R.string.on_deleted_message))
+
+        findNavController().navigate(R.id.action_updateFregment_to_listFragment)
     }
 
     private fun showToast(message: String) {
@@ -86,7 +113,7 @@ class UpdateFregment : Fragment() {
     private fun setImageToImageButton(imagePath: String?){
         if (imagePath.isNullOrBlank()) {
             //Пользователь не поставил изображение
-            showToast(R.string.no_image_error.toString())
+            showToast(getString(R.string.no_image_error))
         } else {
             val imageFile = File(imagePath)
             if (imageFile.exists()) {
@@ -94,7 +121,7 @@ class UpdateFregment : Fragment() {
                 imageButton.setImageBitmap(imageBitmap)
             } else {
                 //Файл отсутствует по пути
-                showToast(R.string.missed_image_error.toString())
+                showToast(getString(R.string.missed_image_error))
             }
         }
     }
@@ -202,12 +229,12 @@ class UpdateFregment : Fragment() {
             )
 
             mClothingItemView.updateClothingItem(updatedClothingItem)
-            showToast(R.string.on_updated_message.toString())
+            showToast(getString(R.string.on_updated_message))
 
             findNavController().navigate(R.id.action_updateFregment_to_listFragment)
         }else{
             // Если title пуст или null, показываем ошибку
-            showToast(R.string.empty_title_error.toString())
+            showToast(getString(R.string.empty_title_error))
         }
     }
 }

@@ -148,7 +148,7 @@ class AddFragment : Fragment() {
             imageButton.setImageBitmap(imageBitmap)
         } else {
             // Если файл отсутствует, показываем сообщение об ошибке
-            showToast(R.string.missed_image_error.toString())
+            showToast(getString(R.string.missed_image_error))
         }
     }
 
@@ -178,13 +178,13 @@ class AddFragment : Fragment() {
             mClothingItemView.addClothingItem(clothingItem)
 
             // Отображаем уведомление об успешном добавлении
-            showToast(R.string.on_added_message.toString())
+            showToast(getString(R.string.on_added_message))
 
             // После добавления пользователя перенаправляем на экран списка
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
         } else {
             // Если title пуст или null, показываем ошибку
-            showToast(R.string.empty_title_error.toString())
+            showToast(getString(R.string.empty_title_error))
         }
     }
 

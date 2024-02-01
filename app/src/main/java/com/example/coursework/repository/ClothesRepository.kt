@@ -19,4 +19,12 @@ class ClothesRepository(private val dao: ClothesDao) {
     suspend fun updateClothingItem(clothingItem: ClothingItem){
         dao.updateClothingItem(clothingItem)
     }
+
+    suspend fun deleteClothingItem(clothingItem: ClothingItem){
+        dao.deleteClothingItem(clothingItem)
+    }
+
+    suspend fun deleteEveryClothingItem(){
+        dao.deleteEveryClothingItem()
+    }
 }

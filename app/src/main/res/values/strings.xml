@@ -5,6 +5,7 @@
 
     <string name="on_added_message">added👍</string>
     <string name="on_updated_message">updated👍</string>
+    <string name="on_deleted_message">deleted😰</string>
     <string name="empty_title_error">title can`t be empty</string>
 
     <string name="no_image_error">can`t find the image</string>
