@@ -26,6 +26,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.coursework.R
 import com.example.coursework.viewModel.ClothesViewModel
 import com.example.coursework.model.ClothingItem
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -50,6 +51,11 @@ class AddFragment : Fragment() {
         imageButton = view.findViewById(R.id.add_imageButton)
         imageButton.setOnClickListener {
             openGalleryForImage()
+        }
+
+        //
+        view.findViewById<FloatingActionButton>(R.id.add_back_button).setOnClickListener{
+            findNavController().navigate(R.id.action_addFragment_to_listFragment)
         }
 
         //По нажатии на add_add_button происходит добавление в базу данных

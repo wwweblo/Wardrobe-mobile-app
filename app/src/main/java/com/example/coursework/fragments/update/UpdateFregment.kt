@@ -37,6 +37,7 @@ class UpdateFregment : Fragment() {
     private lateinit var descriptionInput: EditText
     private lateinit var updateButton: Button
     private lateinit var deleteButton: FloatingActionButton
+    private lateinit var backButton:FloatingActionButton
 
     private val args by navArgs<UpdateFregmentArgs>()
     private lateinit var mClothingItemView: ClothesViewModel
@@ -59,6 +60,7 @@ class UpdateFregment : Fragment() {
         descriptionInput = view.findViewById(R.id.update_description_input)
         updateButton = view.findViewById(R.id.update_update_button)
         deleteButton = view.findViewById(R.id.update_delete_button)
+        backButton = view.findViewById(R.id.update_back_button)
 
         //Установка значаний из базы данных
         val imagePath = args.currentClothingItem.image
@@ -77,6 +79,10 @@ class UpdateFregment : Fragment() {
 
         deleteButton.setOnClickListener{
             deleteItem()
+        }
+
+        backButton.setOnClickListener{
+            findNavController().navigate(R.id.action_updateFregment_to_listFragment)
         }
 
         return view
