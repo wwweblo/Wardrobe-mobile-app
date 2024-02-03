@@ -15,9 +15,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
@@ -46,6 +48,20 @@ class AddFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add, container, false)
 
         mClothingItemView = ViewModelProvider(this).get(ClothesViewModel::class.java)
+
+        // Устанавливаем адаптер для Spinner
+        val seasonSpinner = view.findViewById<Spinner>(R.id.add_season_spinner)
+        val adapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.seasons,
+            android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        seasonSpinner.adapter = adapter
+
+        // Устанавливаем "All year" как выбранный элемент по умолчанию
+        val allYearIndex = adapter.getPosition("All year")
+        seasonSpinner.setSelection(allYearIndex)
 
         // По нажатии на add_imageButton пользователь выбирает изображение
         imageButton = view.findViewById(R.id.add_imageButton)
@@ -166,7 +182,8 @@ class AddFragment : Fragment() {
     private fun insertDataToDatabase(view: View) {
         // Получаем значения из полей ввода
         val title = view.findViewById<EditText>(R.id.add_title_input).text.toString()
-        val season = view.findViewById<EditText>(R.id.add_season_input).text.toString()
+        val seasonSpinner = view.findViewById<Spinner>(R.id.add_season_spinner)
+        val season = seasonSpinner.selectedItem.toString()
         val description = view.findViewById<EditText>(R.id.add_description_input).text.toString()
 
         // Если title не null и не является пустым, добавляем clothingItem

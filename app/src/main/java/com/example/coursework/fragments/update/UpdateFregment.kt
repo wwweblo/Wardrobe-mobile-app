@@ -11,9 +11,11 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -33,7 +35,8 @@ class UpdateFregment : Fragment() {
     private lateinit var view: View
     private lateinit var imageButton: ImageButton
     private lateinit var titleInput: EditText
-    private lateinit var seasonInput: EditText
+    //private lateinit var seasonInput: EditText
+    private lateinit var seasonSpinner: Spinner
     private lateinit var descriptionInput: EditText
     private lateinit var updateButton: Button
     private lateinit var deleteButton: FloatingActionButton
@@ -56,18 +59,42 @@ class UpdateFregment : Fragment() {
         //Инициализация компонентов
         imageButton = view.findViewById(R.id.update_imageButton)
         titleInput = view.findViewById(R.id.update_title_input)
-        seasonInput = view.findViewById(R.id.update_season_input)
+        //seasonInput = view.findViewById(R.id.update_season_input)
+        seasonSpinner = view.findViewById(R.id.update_season_spinner)
         descriptionInput = view.findViewById(R.id.update_description_input)
         updateButton = view.findViewById(R.id.update_update_button)
         deleteButton = view.findViewById(R.id.update_delete_button)
         backButton = view.findViewById(R.id.update_back_button)
 
-        //Установка значаний из базы данных
+        // Установка значений из базы данных
         val imagePath = args.currentClothingItem.image
         setImageToImageButton(imagePath)
         titleInput.setText(args.currentClothingItem.title)
-        seasonInput.setText(args.currentClothingItem.season)
+
+        // Задаем значение в Spinner
+        val spinnerAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.seasons,
+            android.R.layout.simple_spinner_item
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        seasonSpinner.adapter = spinnerAdapter
+
+        // Получаем массив строк из ресурсов
+        val seasonsArray = resources.getStringArray(R.array.seasons)
+
+        // Устанавливаем значение в Spinner, если оно присутствует в массиве
+        val currentSeason = args.currentClothingItem.season
+        if (seasonsArray.contains(currentSeason)) {
+            val position = spinnerAdapter.getPosition(currentSeason)
+            seasonSpinner.setSelection(position)
+        } else {
+            // Выводим ошибку, так как значение отсутствует в Spinner
+            showToast(getString(R.string.season_spinner_error))
+        }
+
         descriptionInput.setText(args.currentClothingItem.description)
+
 
         imageButton.setOnClickListener{
             openGalleryForImage()
@@ -221,7 +248,7 @@ class UpdateFregment : Fragment() {
      */
     private fun updateItem(){
         val title = titleInput.text.toString()
-        val season = seasonInput.text.toString()
+        val season = seasonSpinner.selectedItem.toString()
         val description = descriptionInput.text.toString()
 
         if(emptyStringCheck(title)){
