@@ -12,7 +12,8 @@ data class ClothingItem (
     val id: Int,
     val image: String?,
     val title: String,
+    val season: String,
     val description: String,
-    val season: String
+    val updated_at: Long
 
 ): Parcelable
