@@ -62,6 +62,4 @@ class ListAdapter:RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         this.clothingItemList = clothingItem
         notifyDataSetChanged()
     }
-
-
 }

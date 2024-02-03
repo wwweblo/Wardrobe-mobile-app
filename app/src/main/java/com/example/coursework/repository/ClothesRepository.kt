@@ -3,6 +3,7 @@ package com.example.coursework.repository
 import androidx.lifecycle.LiveData
 import com.example.coursework.data.ClothesDao
 import com.example.coursework.model.ClothingItem
+import com.example.coursework.viewModel.SortOrder
 
 /*
 *   Репозиторий - класс, который предоставляет достум к нескольким източникам данных
@@ -26,5 +27,12 @@ class ClothesRepository(private val dao: ClothesDao) {
 
     suspend fun deleteEveryClothingItem(){
         dao.deleteEveryClothingItem()
+    }
+
+    fun getAllClothingItemsSorted(sortOrder: SortOrder): LiveData<List<ClothingItem>> {
+        return when (sortOrder) {
+            SortOrder.ASCENDING -> dao.getAllClothingItemsAscending()
+            SortOrder.DESCENDING -> dao.getAllClothingItemsDescending()
+        }
     }
 }
