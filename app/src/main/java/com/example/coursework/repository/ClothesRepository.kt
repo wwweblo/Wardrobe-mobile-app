@@ -27,4 +27,12 @@ class ClothesRepository(private val dao: ClothesDao) {
     suspend fun deleteEveryClothingItem(){
         dao.deleteEveryClothingItem()
     }
+
+    fun getClothingItemsSortedByTitle(): LiveData<List<ClothingItem>> {
+        return dao.getClothingItemsSortedByTitle()
+    }
+
+    fun getClothingItemsSortedByDateUpdated(): LiveData<List<ClothingItem>> {
+        return dao.getClothingItemsSortedByDateUpdated()
+    }
 }

@@ -194,7 +194,9 @@ class AddFragment : Fragment() {
                 image = currentImagePath,
                 title = title,
                 season = season,
-                description = description
+                description = description,
+
+                dateUpdated = System.currentTimeMillis()
             )
 
             // Добавляем clothingItem в базу данных

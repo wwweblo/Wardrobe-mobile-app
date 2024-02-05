@@ -58,10 +58,16 @@ class ListAdapter:RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         }
     }
 
-    fun setData(clothingItem: List<ClothingItem>){
+    fun setData(clothingItem: List<ClothingItem>) {
+        this.clothingItemList = clothingItem
+        updateItems(clothingItem)
+    }
+
+    fun updateItems(clothingItem: List<ClothingItem>) {
         this.clothingItemList = clothingItem
         notifyDataSetChanged()
     }
+
 
 
 }

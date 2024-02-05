@@ -32,4 +32,7 @@ interface ClothesDao {
 
     @Query("SELECT * FROM Clothing_item ORDER BY title ASC ")
     fun getClothingItemsSortedByTitle():LiveData<List<ClothingItem>>
+
+    @Query("SELECT * FROM Clothing_item ORDER BY dateUpdated DESC")
+    fun getClothingItemsSortedByDateUpdated(): LiveData<List<ClothingItem>>
 }

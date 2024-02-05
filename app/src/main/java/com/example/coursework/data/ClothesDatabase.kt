@@ -8,7 +8,7 @@ import com.example.coursework.model.ClothingItem
 
 @Database(
     entities = [ClothingItem::class],
-    version = 1,
+    version = 2,
     exportSchema = false
     )
 abstract class ClothesDatabase: RoomDatabase() {

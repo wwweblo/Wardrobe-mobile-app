@@ -258,7 +258,9 @@ class UpdateFregment : Fragment() {
                 image = currentImagePath,
                 title = title,
                 season = season,
-                description = description
+                description = description,
+
+                dateUpdated = System.currentTimeMillis()
             )
 
             mClothingItemView.updateClothingItem(updatedClothingItem)

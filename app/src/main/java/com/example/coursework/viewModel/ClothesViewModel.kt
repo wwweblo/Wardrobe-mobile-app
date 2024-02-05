@@ -3,6 +3,7 @@ package com.example.coursework.viewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.coursework.data.ClothesDatabase
 import com.example.coursework.repository.ClothesRepository
@@ -18,8 +19,9 @@ import kotlinx.coroutines.launch
 
 class ClothesViewModel(application: Application): AndroidViewModel(application) {
 
-    val readAllData: LiveData<List<ClothingItem>>
+    var readAllData: LiveData<List<ClothingItem>> = MutableLiveData<List<ClothingItem>>()
     private val repository: ClothesRepository
+    var currentSortType: SortType = SortType.BY_DATE_UPDATED
 
     init {
 
@@ -27,12 +29,16 @@ class ClothesViewModel(application: Application): AndroidViewModel(application) 
         *   При инициализации:
         *   Мы получаем dao из базы данных
         *   Передаем в репозиторий dao
-        *   Получаем все записи из репозитория
+        *   Устанавливаем readAllData в зависимости от currentSortType
         */
 
         val dao = ClothesDatabase.getDatabase(application).dao()
         repository = ClothesRepository(dao)
-        readAllData = repository.readAllData
+
+        readAllData = when (currentSortType) {
+            SortType.BY_TITLE -> repository.getClothingItemsSortedByTitle()
+            SortType.BY_DATE_UPDATED -> repository.getClothingItemsSortedByDateUpdated()
+        }
     }
 
     fun addClothingItem(clothingItem: ClothingItem){
@@ -56,6 +62,21 @@ class ClothesViewModel(application: Application): AndroidViewModel(application) 
     fun deleteEveryClothingItem(){
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteEveryClothingItem()
+        }
+    }
+
+    fun changeSortType() {
+        currentSortType = when (currentSortType) {
+            SortType.BY_TITLE -> SortType.BY_DATE_UPDATED
+            SortType.BY_DATE_UPDATED -> SortType.BY_TITLE
+        }
+        updateClothingItemsSortedBy(currentSortType)
+    }
+    fun updateClothingItemsSortedBy(sortType: SortType) {
+        currentSortType = sortType
+        readAllData = when (sortType) {
+            SortType.BY_TITLE -> repository.getClothingItemsSortedByTitle()
+            SortType.BY_DATE_UPDATED -> repository.getClothingItemsSortedByDateUpdated()
         }
     }
 

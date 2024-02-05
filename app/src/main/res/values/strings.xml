@@ -11,6 +11,9 @@
     <string name="no_image_error">Can`t find the image</string>
     <string name="missed_image_error">No image on saved path</string>
 
+    <string name="sort_type_title">Sorted by title</string>
+    <string name="sort_type_last_update">Sorted by last update</string>
+
     <string name="season_spinner_error">There is unexpected season🤔</string>
     <string-array name="seasons">
         <item>Spring</item>
