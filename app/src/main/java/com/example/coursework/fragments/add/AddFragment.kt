@@ -88,9 +88,9 @@ class AddFragment : Fragment() {
             val isImagePathUsed = mClothingItemView.isImagePathUsed(currentImagePath)
             if (!isImagePathUsed) {
                 deleteImage(currentImagePath)
-                showToast("Previous image is cleared")
             }
         }
+        showToast("Previous image is cleared")
     }
 
     private fun deleteImage(imagePath: String?) {
@@ -131,7 +131,7 @@ class AddFragment : Fragment() {
             val selectedImageBitmap = BitmapFactory.decodeStream(stream)
             val storageDir = File(
                 requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
-                "Wardrobe_app"
+                "Wardrobe app"
             )
             if (!storageDir.exists()) {
                 storageDir.mkdirs()
@@ -140,20 +140,20 @@ class AddFragment : Fragment() {
             val outputStream = FileOutputStream(imageFile)
             selectedImageBitmap.compress(Bitmap.CompressFormat.PNG, 80, outputStream)
             outputStream.close()
-            //showToast("Image size: ${imageFile.length() / 1024} KB")
-            scanFile(imageFile)
+//            scanFile(imageFile) // Сканируем новый файл
             imageFile.absolutePath
         } ?: throw IOException("Input stream is null")
     }
-
 
     private fun scanFile(file: File) {
         MediaScannerConnection.scanFile(
             requireContext(),
             arrayOf(file.absolutePath),
+            null,
             null
-        ) { _, _ -> }
+        )
     }
+
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -193,7 +193,7 @@ class AddFragment : Fragment() {
     }
 
     private fun emptyStringCheck(vararg strings: String?): Boolean {
-        return strings.all { it != null && it.isNotBlank() }
+        return strings.all { !it.isNullOrBlank() }
     }
 
     private fun showNotification(message: String) {
