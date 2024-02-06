@@ -35,4 +35,8 @@ class ClothesRepository(private val dao: ClothesDao) {
     fun getClothingItemsSortedByDateUpdated(): LiveData<List<ClothingItem>> {
         return dao.getClothingItemsSortedByDateUpdated()
     }
+
+    fun isImagePathUsed(imagePath: String?): Boolean {
+        return dao.isImagePathUsed(imagePath)
+    }
 }

@@ -80,4 +80,8 @@ class ClothesViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
+    fun isImagePathUsed(imagePath: String?): Boolean {
+        return repository.isImagePathUsed(imagePath)
+    }
+
 }

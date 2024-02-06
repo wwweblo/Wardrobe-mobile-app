@@ -35,4 +35,7 @@ interface ClothesDao {
 
     @Query("SELECT * FROM Clothing_item ORDER BY dateUpdated DESC")
     fun getClothingItemsSortedByDateUpdated(): LiveData<List<ClothingItem>>
+
+    @Query("SELECT COUNT(*) FROM Clothing_item WHERE image = :imagePath")
+    fun isImagePathUsed(imagePath: String?): Boolean
 }
