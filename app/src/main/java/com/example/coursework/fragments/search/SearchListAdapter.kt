@@ -1,4 +1,4 @@
-package com.example.coursework.fragments.list
+package com.example.coursework.fragments.search
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +8,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
+import com.example.coursework.fragments.list.ListFragmentDirections
 import com.example.coursework.model.ClothingItem
 
-class ListAdapter:RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
+class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.MyViewHolder>() {
 
     private var clothingItemList = emptyList<ClothingItem>()
 

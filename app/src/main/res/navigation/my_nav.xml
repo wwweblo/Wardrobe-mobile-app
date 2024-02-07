@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_listFragment_to_updateFregment"
             app:destination="@id/updateFregment" />
+        <action
+            android:id="@+id/action_listFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -36,5 +39,13 @@
         <argument
             android:name="currentClothingItem"
             app:argType="com.example.coursework.model.ClothingItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.coursework.fragments.search.SearchFragment"
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_listFragment"
+            app:destination="@id/listFragment" />
     </fragment>
 </navigation>

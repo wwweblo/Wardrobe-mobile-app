@@ -50,6 +50,12 @@ class ListFragment : Fragment() {
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
 
+        //Кнопка поиска
+        val searchButton = view.findViewById<ImageButton>(R.id.list_search_button)
+        searchButton.setOnClickListener{
+            findNavController().navigate(R.id.action_listFragment_to_searchFragment)
+        }
+
         //Кнопка Сортировки
         val sortButton = view.findViewById<ImageButton>(R.id.list_sort_button)
         sortButton.setOnClickListener {
@@ -88,14 +94,14 @@ class ListFragment : Fragment() {
         if (adapter.itemCount == 0) {
             listTitle?.apply {
                 text = getString(R.string.empty_list_fragment_title)
-                textSize = 24f // Установка размера текста в 26dp
-                gravity = Gravity.CENTER // Центрирование текста по центру
+                textSize = 24f
+                gravity = Gravity.CENTER
             }
         } else {
             listTitle?.apply {
                 text = getString(R.string.list_fragment_title)
                 textSize = 34f
-                gravity = Gravity.CENTER // Вернуть текст в центр по умолчанию
+                gravity = Gravity.CENTER
             }
         }
     }
