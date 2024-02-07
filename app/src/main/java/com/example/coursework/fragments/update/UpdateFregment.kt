@@ -223,12 +223,10 @@ class UpdateFregment : Fragment() {
             selectedImageBitmap.compress(Bitmap.CompressFormat.PNG, 80, outputStream)
             outputStream.close()
             //showToast("Image size: ${imageFile.length() / 1024} KB")
-            scanFile(imageFile)
+//            scanFile(imageFile)
             imageFile.absolutePath
         } ?: throw IOException("Input stream is null")
     }
-
-
 
     // Метод для обновления галереи после сохранения изображения
     private fun scanFile(file: File) {

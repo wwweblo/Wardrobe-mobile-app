@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Wardrobe</string>
     <string name="list_fragment_title">Clothes</string>
+    <string name="empty_list_fragment_title">Press on the plus button to add your clothes</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="on_added_message">Added👍</string>

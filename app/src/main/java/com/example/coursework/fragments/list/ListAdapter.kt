@@ -14,11 +14,9 @@ class ListAdapter:RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     private var clothingItemList = emptyList<ClothingItem>()
 
-    private var titleLenthLimit = 23
-    private var descriptionLenghLimit = 30
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-
-    }
+    private var titleLengthLimit = 23
+    private var descriptionLengthLimit = 30
+    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_row, parent, false))
@@ -34,22 +32,14 @@ class ListAdapter:RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
         //Title
         val titleTextView = holder.itemView.findViewById<TextView>(R.id.list_adapter_title)
-        if (currentItem.title.length > titleLenthLimit) {
-            titleTextView.text = currentItem.title.substring(0, titleLenthLimit) + "..."
-        } else {
-            titleTextView.text = currentItem.title
-        }
+        textViewLimit(titleTextView, currentItem.title, titleLengthLimit)
 
         //Season
         holder.itemView.findViewById<TextView>(R.id.list_adapter_season).text = currentItem.season
 
         //Description
         val descriptionTextView = holder.itemView.findViewById<TextView>(R.id.list_adapter_description)
-        if (currentItem.description.length > descriptionLenghLimit) {
-            descriptionTextView.text = currentItem.description.substring(0, descriptionLenghLimit) + "..."
-        } else {
-            descriptionTextView.text = currentItem.description
-        }
+        textViewLimit(descriptionTextView, currentItem.description, descriptionLengthLimit)
 
         //Передача эелемента на окно обновления
         holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener{
@@ -68,6 +58,12 @@ class ListAdapter:RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         notifyDataSetChanged()
     }
 
-
+    private fun textViewLimit(tv: TextView, text: String, limit: Int){
+        if (text.length > limit) {
+            tv.text = text.substring(0, titleLengthLimit) + "..."
+        } else {
+            tv.text = text
+        }
+    }
 
 }

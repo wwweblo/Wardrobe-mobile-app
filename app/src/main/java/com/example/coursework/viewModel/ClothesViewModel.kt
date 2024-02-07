@@ -12,9 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /*
-*   Цель ViewModel - передавать данные из базы данных в ui
-*   Для отображения изменений. ViewModel нужна для объединения
-*   репозитория с ui
+*   Цель ViewModel - Работа с пользовательским интерфейсом
 */
 
 class ClothesViewModel(application: Application): AndroidViewModel(application) {
@@ -40,6 +38,8 @@ class ClothesViewModel(application: Application): AndroidViewModel(application) 
             SortType.BY_DATE_UPDATED -> repository.getClothingItemsSortedByDateUpdated()
         }
     }
+
+
 
     fun addClothingItem(clothingItem: ClothingItem){
         viewModelScope.launch(Dispatchers.IO) {
