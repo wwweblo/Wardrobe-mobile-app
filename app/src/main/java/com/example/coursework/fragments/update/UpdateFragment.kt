@@ -30,16 +30,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
-import com.example.coursework.data.ClothesDatabase
-import com.example.coursework.repository.ClothesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UpdateFregment : Fragment() {
+class UpdateFragment : Fragment() {
 
     private lateinit var view: View
     private lateinit var imageButton: ImageButton
@@ -50,7 +45,7 @@ class UpdateFregment : Fragment() {
     private lateinit var deleteButton: FloatingActionButton
     private lateinit var backButton:FloatingActionButton
 
-    private val args by navArgs<UpdateFregmentArgs>()
+    private val args by navArgs<UpdateFragmentArgs>()
     private lateinit var mClothingItemView: ClothesViewModel
     private val IMAGE_DIRECTORY = "ClothingImages"
     private var currentImagePath: String? = null
@@ -122,8 +117,8 @@ class UpdateFregment : Fragment() {
             deleteItem()
         }
 
-        backButton.setOnClickListener{
-            findNavController().navigate(R.id.action_updateFregment_to_listFragment)
+        backButton.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         return view
@@ -158,7 +153,7 @@ class UpdateFregment : Fragment() {
 
         showToast(getString(R.string.on_deleted_message))
 
-        findNavController().navigate(R.id.action_updateFregment_to_listFragment)
+        findNavController().navigate(R.id.action_updateFragment_to_listFragment)
     }
 
     // Метод для отображения сообщения в Toast
@@ -261,7 +256,7 @@ class UpdateFregment : Fragment() {
 
     // Метод для проверки, что переданные строки не являются null и не являются пустыми или состоят только из пробелов
     private fun emptyStringCheck(vararg strings: String?): Boolean {
-        return strings.all { it != null && it.isNotBlank() }
+        return strings.all { !it.isNullOrBlank() }
     }
 
     // Метод для обновления элемента в базе данных
@@ -283,7 +278,7 @@ class UpdateFregment : Fragment() {
             mClothingItemView.updateClothingItem(updatedClothingItem)
             showToast(getString(R.string.on_updated_message))
 
-            findNavController().navigate(R.id.action_updateFregment_to_listFragment)
+            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         } else {
             showToast(getString(R.string.empty_title_error))
         }

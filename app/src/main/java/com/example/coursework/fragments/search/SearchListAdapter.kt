@@ -44,7 +44,7 @@ class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.MyViewHolder>()
 
         //Передача эелемента на окно обновления
         holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener{
-            val action = ListFragmentDirections.actionListFragmentToUpdateFregment(currentItem)
+            val action = SearchFragmentDirections.actionSearchFragmentToUpdateFragment(currentItem)
             holder.itemView.findNavController().navigate(action)
         }
     }
