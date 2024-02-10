@@ -1,7 +1,7 @@
 package com.example.coursework.repository
 
 import androidx.lifecycle.LiveData
-import com.example.coursework.data.ClothesDao
+import com.example.coursework.data.dao.ClothesDao
 import com.example.coursework.model.ClothingItem
 
 /*

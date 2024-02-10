@@ -8,6 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.coursework.data.ClothesDatabase
 import com.example.coursework.repository.ClothesRepository
 import com.example.coursework.model.ClothingItem
+import com.example.coursework.model.ClothingItemOutfitCrossRef
+import com.example.coursework.model.Outfit
+import com.example.coursework.repository.ClothingItemOutfitCrossRefRepository
+import com.example.coursework.repository.OutfitRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -15,73 +19,121 @@ import kotlinx.coroutines.launch
 *   Цель ViewModel - Работа с пользовательским интерфейсом
 */
 
-class ClothesViewModel(application: Application): AndroidViewModel(application) {
+class ClothesViewModel(application: Application) : AndroidViewModel(application) {
 
-    var readAllData: LiveData<List<ClothingItem>> = MutableLiveData<List<ClothingItem>>()
-    private val repository: ClothesRepository
-    var currentSortType: SortType = SortType.BY_DATE_UPDATED
+    // LiveData для списка элементов одежды
+    var readAllClothes: LiveData<List<ClothingItem>> = MutableLiveData<List<ClothingItem>>()
+    // LiveData для списка комплектов
+    var readAllOutfits: LiveData<List<Outfit>> = MutableLiveData<List<Outfit>>()
+
+    // Репозитории для работы с элементами одежды и комплектами
+    private val clothesRepository: ClothesRepository
+    private val outfitRepository: OutfitRepository
+    private val clothingItemOutfitCrossRefRepository: ClothingItemOutfitCrossRefRepository
+
+    var currentClothesSortType: SortType = SortType.BY_DATE_UPDATED
+    var currentOutfitsSortType: SortType = SortType.BY_DATE_UPDATED
 
     init {
+        //  Получаем dao из базы данных
+        val clothesDao = ClothesDatabase.getDatabase(application).clothesDao()
+        val outfitDao = ClothesDatabase.getDatabase(application).outfitDao()
+        val clothesOutfitDao = ClothesDatabase.getDatabase(application).clothesItemOutfitDao()
 
-        /*
-        *   При инициализации:
-        *   Мы получаем dao из базы данных
-        *   Передаем в репозиторий dao
-        *   Устанавливаем readAllData в зависимости от currentSortType
-        */
+        //  Передаем dao в репозитории
+        clothesRepository = ClothesRepository(clothesDao)
+        outfitRepository = OutfitRepository(outfitDao)
+        clothingItemOutfitCrossRefRepository = ClothingItemOutfitCrossRefRepository(clothesOutfitDao)
 
-        val dao = ClothesDatabase.getDatabase(application).dao()
-        repository = ClothesRepository(dao)
-
-        readAllData = when (currentSortType) {
-            SortType.BY_TITLE -> repository.getClothingItemsSortedByTitle()
-            SortType.BY_DATE_UPDATED -> repository.getClothingItemsSortedByDateUpdated()
+        //  Получение списка Clothes
+        readAllClothes = when (currentOutfitsSortType) {
+            SortType.BY_TITLE -> clothesRepository.getClothingItemsSortedByTitle()
+            SortType.BY_DATE_UPDATED -> clothesRepository.getClothingItemsSortedByDateUpdated()
+        }
+        // Получение списка Outfits
+        readAllOutfits = when (currentClothesSortType) {
+            SortType.BY_TITLE -> outfitRepository.getAllOutfitsSortedByName()
+            SortType.BY_DATE_UPDATED -> outfitRepository.getAllOutfitsSortedByDate()
         }
     }
 
 
 
-    fun addClothingItem(clothingItem: ClothingItem){
+    // Clothes
+    fun addClothingItem(clothingItem: ClothingItem) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addClothingItem(clothingItem)
+            clothesRepository.addClothingItem(clothingItem)
         }
     }
 
-    fun updateClothingItem(clothingItem: ClothingItem){
+    fun updateClothingItem(clothingItem: ClothingItem) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updateClothingItem(clothingItem)
+            clothesRepository.updateClothingItem(clothingItem)
         }
     }
 
-    fun deleteClothingItem(clothingItem: ClothingItem){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteClothingItem(clothingItem)
-        }
+    fun isClothesImagePathUsed(imagePath: String?): Boolean {
+        return clothesRepository.isImagePathUsed(imagePath)
     }
 
-    fun deleteEveryClothingItem(){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteEveryClothingItem()
-        }
-    }
-
-    fun changeSortType() {
-        currentSortType = when (currentSortType) {
+    fun changeClothesSortType() {
+        currentClothesSortType = when (currentClothesSortType) {
             SortType.BY_TITLE -> SortType.BY_DATE_UPDATED
             SortType.BY_DATE_UPDATED -> SortType.BY_TITLE
         }
-        updateClothingItemsSortedBy(currentSortType)
+        updateClothingItemsSortedBy(currentClothesSortType)
     }
     fun updateClothingItemsSortedBy(sortType: SortType) {
-        currentSortType = sortType
-        readAllData = when (sortType) {
-            SortType.BY_TITLE -> repository.getClothingItemsSortedByTitle()
-            SortType.BY_DATE_UPDATED -> repository.getClothingItemsSortedByDateUpdated()
+        currentClothesSortType = sortType
+        readAllClothes = when (sortType) {
+            SortType.BY_TITLE -> clothesRepository.getClothingItemsSortedByTitle()
+            SortType.BY_DATE_UPDATED -> clothesRepository.getClothingItemsSortedByDateUpdated()
         }
     }
 
-    fun isImagePathUsed(imagePath: String?): Boolean {
-        return repository.isImagePathUsed(imagePath)
+    fun deleteClothingItem(clothingItem: ClothingItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            clothesRepository.deleteClothingItem(clothingItem)
+        }
     }
 
+    fun deleteEveryClothingItem() {
+        viewModelScope.launch(Dispatchers.IO) {
+            clothesRepository.deleteEveryClothingItem()
+        }
+    }
+
+
+    // Outfits
+    fun addOutfit(outfit: Outfit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            outfitRepository.addOutfit(outfit)
+        }
+    }
+
+    fun updateOutfit(outfit: Outfit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            outfitRepository.updateOutfit(outfit)
+        }
+    }
+
+    fun deleteOutfit(outfit: Outfit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            outfitRepository.deleteOutfit(outfit)
+        }
+    }
+
+
+    // ClothesOutfit
+    fun addClothingItemOutfitCrossRef(clothingItemOutfitCrossRef: ClothingItemOutfitCrossRef) {
+        viewModelScope.launch(Dispatchers.IO) {
+            clothingItemOutfitCrossRefRepository.addClothingItemOutfitCrossRef(clothingItemOutfitCrossRef)
+        }
+    }
+
+    fun deleteClothingItemOutfitCrossRef(clothingItemOutfitCrossRef: ClothingItemOutfitCrossRef) {
+        viewModelScope.launch(Dispatchers.IO) {
+            clothingItemOutfitCrossRefRepository.deleteClothingItemOutfitCrossRef(clothingItemOutfitCrossRef)
+        }
+    }
 }

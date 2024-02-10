@@ -1,4 +1,4 @@
-package com.example.coursework.fragments.update
+package com.example.coursework.fragments.Clothes.update
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -142,7 +142,7 @@ class UpdateFragment : Fragment() {
         val currentImagePath = args.currentClothingItem.image
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val isImagePathUsed = mClothingItemView.isImagePathUsed(currentImagePath)
+            val isImagePathUsed = mClothingItemView.isClothesImagePathUsed(currentImagePath)
 
             if (!isImagePathUsed) {
                 deleteImage(currentImagePath)
@@ -235,7 +235,7 @@ class UpdateFragment : Fragment() {
     // Метод для замены текущего изображения
     private fun replaceCurrentImage(imagePath: String?) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val isImagePathUsed = mClothingItemView.isImagePathUsed(currentImagePath)
+            val isImagePathUsed = mClothingItemView.isClothesImagePathUsed(currentImagePath)
 
             if (!isImagePathUsed) {
                 deleteImage(currentImagePath)
@@ -270,6 +270,7 @@ class UpdateFragment : Fragment() {
                 id = args.currentClothingItem.id,
                 image = currentImagePath,
                 title = title,
+                type = null,
                 season = season,
                 description = description,
                 dateUpdated = System.currentTimeMillis()

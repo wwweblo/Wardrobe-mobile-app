@@ -1,6 +1,5 @@
-package com.example.coursework.fragments.list
+package com.example.coursework.fragments.Clothes.list
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -59,8 +58,8 @@ class ListFragment : Fragment() {
         //Кнопка Сортировки
         val sortButton = view.findViewById<ImageButton>(R.id.list_sort_button)
         sortButton.setOnClickListener {
-            mClothesViewModel.changeSortType()
-            val message = when (mClothesViewModel.currentSortType) {
+            mClothesViewModel.changeClothesSortType()
+            val message = when (mClothesViewModel.currentClothesSortType) {
                 SortType.BY_TITLE -> getString(R.string.sort_type_title)
                 SortType.BY_DATE_UPDATED -> getString(R.string.sort_type_last_update)
             }
@@ -73,7 +72,7 @@ class ListFragment : Fragment() {
     }
 
     private fun updateAdapter(){
-        mClothesViewModel.readAllData.observe(viewLifecycleOwner, Observer { clothingItem ->
+        mClothesViewModel.readAllClothes.observe(viewLifecycleOwner, Observer { clothingItem ->
             adapter.setData(clothingItem)
             updateListTitle() // Обновляем текст после обновления данных
         })

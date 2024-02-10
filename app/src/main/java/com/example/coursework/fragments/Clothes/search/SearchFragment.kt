@@ -1,7 +1,6 @@
-package com.example.coursework.fragments.search
+package com.example.coursework.fragments.Clothes.search
 
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +19,6 @@ import com.example.coursework.viewModel.ClothesViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import java.util.Random
 
 @Suppress("DEPRECATION")
 class SearchFragment : Fragment() {
@@ -76,7 +73,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun updateAdapter(searchText: String) {
-        mClothesViewModel.readAllData.observe(viewLifecycleOwner, Observer { clothingItems ->
+        mClothesViewModel.readAllClothes.observe(viewLifecycleOwner, Observer { clothingItems ->
             val filteredList = clothingItems.filter { item ->
                 item.title.contains(searchText, ignoreCase = true) ||
                         item.season.contains(searchText, ignoreCase = true) ||

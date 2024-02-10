@@ -1,4 +1,4 @@
-package com.example.coursework.data
+package com.example.coursework.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -23,19 +23,19 @@ interface ClothesDao {
     @Delete
     suspend fun deleteClothingItem(clothingItem: ClothingItem)
 
-    @Query("DELETE FROM Clothing_item")
+    @Query("DELETE FROM ClothingItem")
     suspend fun deleteEveryClothingItem()
     @Update
     suspend fun updateClothingItem(clothingItem: ClothingItem)
-    @Query("SELECT * FROM Clothing_item ORDER BY id ")
+    @Query("SELECT * FROM ClothingItem ORDER BY id ")
     fun getClothingItemsSortedById():LiveData<List<ClothingItem>>
 
-    @Query("SELECT * FROM Clothing_item ORDER BY title ASC ")
+    @Query("SELECT * FROM ClothingItem ORDER BY title ASC ")
     fun getClothingItemsSortedByTitle():LiveData<List<ClothingItem>>
 
-    @Query("SELECT * FROM Clothing_item ORDER BY dateUpdated DESC")
+    @Query("SELECT * FROM ClothingItem ORDER BY dateUpdated DESC")
     fun getClothingItemsSortedByDateUpdated(): LiveData<List<ClothingItem>>
 
-    @Query("SELECT COUNT(*) FROM Clothing_item WHERE image = :imagePath")
+    @Query("SELECT COUNT(*) FROM ClothingItem WHERE image = :imagePath")
     fun isImagePathUsed(imagePath: String?): Boolean
 }

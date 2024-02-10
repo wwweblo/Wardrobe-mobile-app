@@ -1,4 +1,4 @@
-package com.example.coursework.fragments.search
+package com.example.coursework.fragments.Clothes.list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +8,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
-import com.example.coursework.fragments.list.ListFragmentDirections
 import com.example.coursework.model.ClothingItem
 
-class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.MyViewHolder>() {
+class ListAdapter:RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     private var clothingItemList = emptyList<ClothingItem>()
 
@@ -44,7 +43,7 @@ class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.MyViewHolder>()
 
         //Передача эелемента на окно обновления
         holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener{
-            val action = SearchFragmentDirections.actionSearchFragmentToUpdateFragment(currentItem)
+            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
             holder.itemView.findNavController().navigate(action)
         }
     }

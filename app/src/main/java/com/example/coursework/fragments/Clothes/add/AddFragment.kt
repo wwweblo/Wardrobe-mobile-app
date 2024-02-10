@@ -1,4 +1,4 @@
-package com.example.coursework.fragments.add
+package com.example.coursework.fragments.Clothes.add
 
 import android.app.Activity
 import android.app.NotificationChannel
@@ -85,7 +85,7 @@ class AddFragment : Fragment() {
 
     private fun replaceCurrentImage(imagePath: String?) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val isImagePathUsed = mClothingItemView.isImagePathUsed(currentImagePath)
+            val isImagePathUsed = mClothingItemView.isClothesImagePathUsed(currentImagePath)
             if (!isImagePathUsed) {
                 deleteImage(currentImagePath)
             }
@@ -180,6 +180,7 @@ class AddFragment : Fragment() {
                 id = 0,
                 image = currentImagePath,
                 title = title,
+                type = null,
                 season = season,
                 description = description,
                 dateUpdated = System.currentTimeMillis()
