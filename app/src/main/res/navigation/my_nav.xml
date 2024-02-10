@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_listFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_outfitListFragment"
+            app:destination="@id/outfitListFragment" />
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -53,5 +56,13 @@
         <action
             android:id="@+id/action_searchFragment_to_updateFragment"
             app:destination="@id/updateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/outfitListFragment"
+        android:name="com.example.coursework.fragments.Outfits.list.OutfitListFragment"
+        android:label="OutfitListFragment" >
+        <action
+            android:id="@+id/action_outfitListFragment_to_listFragment"
+            app:destination="@id/listFragment" />
     </fragment>
 </navigation>

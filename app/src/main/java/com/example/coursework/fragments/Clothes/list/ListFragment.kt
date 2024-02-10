@@ -29,7 +29,11 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_list, container, false)
+        return inflater.inflate(R.layout.fragment_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //RecyclerView
         adapter = ListAdapter()
@@ -38,7 +42,7 @@ class ListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         //ViewModel
-        mClothesViewModel = ViewModelProvider(this).get(ClothesViewModel::class.java)
+        mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
 
         //Обновляем адаптер и текст в случае изменения данных
         updateAdapter()
@@ -67,9 +71,8 @@ class ListFragment : Fragment() {
 
             updateAdapter()
         }
-
-        return view
     }
+
 
     private fun updateAdapter(){
         mClothesViewModel.readAllClothes.observe(viewLifecycleOwner, Observer { clothingItem ->
@@ -98,14 +101,11 @@ class ListFragment : Fragment() {
             }
         } else {
             listTitle?.apply {
-                text = getString(R.string.list_fragment_title)
+                text = getString(R.string.clothes)
                 textSize = 34f
                 gravity = Gravity.CENTER
             }
         }
     }
 
-
-
 }
-
