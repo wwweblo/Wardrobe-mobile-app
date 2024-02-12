@@ -67,6 +67,9 @@
         <action
             android:id="@+id/action_outfitListFragment_to_outfitAddFragment"
             app:destination="@id/outfitAddFragment" />
+        <action
+            android:id="@+id/action_outfitListFragment_to_outfitUpdateFragment"
+            app:destination="@id/outfitUpdateFragment" />
     </fragment>
     <fragment
         android:id="@+id/outfitAddFragment"
@@ -75,5 +78,16 @@
         <action
             android:id="@+id/action_outfitAddFragment_to_outfitListFragment"
             app:destination="@id/outfitListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/outfitUpdateFragment"
+        android:name="com.example.coursework.fragments.Outfits.update.OutfitUpdateFragment"
+        android:label="OutfitUpdateFragment" >
+        <action
+            android:id="@+id/action_outfitUpdateFragment_to_outfitListFragment"
+            app:destination="@id/outfitListFragment" />
+        <argument
+            android:name="currentOutfit"
+            app:argType="com.example.coursework.model.Outfit" />
     </fragment>
 </navigation>

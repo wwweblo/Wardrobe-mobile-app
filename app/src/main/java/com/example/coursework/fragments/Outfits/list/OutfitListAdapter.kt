@@ -47,10 +47,10 @@ class OutfitListAdapter:RecyclerView.Adapter<OutfitListAdapter.MyViewHolder>() {
         textViewLimit(descriptionTextView, currentItem.description, descriptionLengthLimit)
 
         //Передача эелемента на окно обновления
-//        holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener{
-//            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
-//            holder.itemView.findNavController().navigate(action)
-//        }
+        holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener{
+            val action = OutfitListFragmentDirections.actionOutfitListFragmentToOutfitUpdateFragment(currentItem)
+            holder.itemView.findNavController().navigate(action)
+        }
     }
 
     fun setData(outfit: List<Outfit>) {
