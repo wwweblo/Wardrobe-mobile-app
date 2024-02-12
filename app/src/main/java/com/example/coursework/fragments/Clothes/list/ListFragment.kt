@@ -96,7 +96,7 @@ class ListFragment : Fragment() {
         if (adapter.itemCount == 0) {
             listTitle?.apply {
                 text = getString(R.string.empty_list_fragment_title)
-                textSize = 20f
+                textSize = 24f
                 gravity = Gravity.CENTER
             }
         } else {

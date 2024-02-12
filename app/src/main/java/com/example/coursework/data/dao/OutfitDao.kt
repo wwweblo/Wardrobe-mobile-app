@@ -23,10 +23,13 @@ interface OutfitDao {
     suspend fun update(outfit: Outfit)
 
     // Получение всех комплектов, отсортированных по названию
-    @Query("SELECT * FROM Outfit ORDER BY name ASC")
-    fun getAllOutfitsSortedByName(): LiveData<List<Outfit>>
+    @Query("SELECT * FROM Outfit ORDER BY title ASC")
+    fun getAllOutfitsSortedByTitle(): LiveData<List<Outfit>>
 
     // Получение всех комплектов, отсортированных по дате изменения (в порядке убывания)
     @Query("SELECT * FROM Outfit ORDER BY dateUpdated DESC")
     fun getAllOutfitsSortedByDate(): LiveData<List<Outfit>>
+
+    @Query("SELECT COUNT(*) FROM Outfit WHERE image = :imagePath")
+    fun isImagePathUsed(imagePath: String?): Boolean
 }

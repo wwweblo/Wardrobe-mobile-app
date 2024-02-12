@@ -7,9 +7,10 @@ import androidx.room.PrimaryKey
 data class Outfit(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val name: String,
+    val image: String?,
+    val title: String,
     val season: String,
     val style: String?,
-    val description: String?,
+    val description: String,
     val dateUpdated: Long
 )

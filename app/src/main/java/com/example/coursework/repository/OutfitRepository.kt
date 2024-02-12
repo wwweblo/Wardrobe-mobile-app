@@ -23,11 +23,15 @@ class OutfitRepository(private val dao: OutfitDao) {
 
     // Получение всех комплектов, отсортированных по названию
     fun getAllOutfitsSortedByName(): LiveData<List<Outfit>> {
-        return dao.getAllOutfitsSortedByName()
+        return dao.getAllOutfitsSortedByTitle()
     }
 
     // Получение всех комплектов, отсортированных по дате изменения
     fun getAllOutfitsSortedByDate(): LiveData<List<Outfit>> {
         return dao.getAllOutfitsSortedByDate()
+    }
+
+    fun isImagePathUsed(imagePath: String?): Boolean {
+        return dao.isImagePathUsed(imagePath)
     }
 }

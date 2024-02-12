@@ -64,5 +64,16 @@
         <action
             android:id="@+id/action_outfitListFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_outfitListFragment_to_outfitAddFragment"
+            app:destination="@id/outfitAddFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/outfitAddFragment"
+        android:name="com.example.coursework.fragments.Outfits.add.OutfitAddFragment"
+        android:label="OutfitAddFragment" >
+        <action
+            android:id="@+id/action_outfitAddFragment_to_outfitListFragment"
+            app:destination="@id/outfitListFragment" />
     </fragment>
 </navigation>

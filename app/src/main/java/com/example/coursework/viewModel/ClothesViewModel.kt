@@ -23,6 +23,7 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
 
     // LiveData для списка элементов одежды
     var readAllClothes: LiveData<List<ClothingItem>> = MutableLiveData<List<ClothingItem>>()
+
     // LiveData для списка комплектов
     var readAllOutfits: LiveData<List<Outfit>> = MutableLiveData<List<Outfit>>()
 
@@ -43,7 +44,8 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
         //  Передаем dao в репозитории
         clothesRepository = ClothesRepository(clothesDao)
         outfitRepository = OutfitRepository(outfitDao)
-        clothingItemOutfitCrossRefRepository = ClothingItemOutfitCrossRefRepository(clothesOutfitDao)
+        clothingItemOutfitCrossRefRepository =
+            ClothingItemOutfitCrossRefRepository(clothesOutfitDao)
 
         //  Получение списка Clothes
         readAllClothes = when (currentOutfitsSortType) {
@@ -56,7 +58,6 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
             SortType.BY_DATE_UPDATED -> outfitRepository.getAllOutfitsSortedByDate()
         }
     }
-
 
 
     // Clothes
@@ -83,6 +84,7 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
         }
         updateClothingItemsSortedBy(currentClothesSortType)
     }
+
     fun updateClothingItemsSortedBy(sortType: SortType) {
         currentClothesSortType = sortType
         readAllClothes = when (sortType) {
@@ -123,17 +125,41 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun changeOutfitSortType() {
+        currentClothesSortType = when (currentClothesSortType) {
+            SortType.BY_TITLE -> SortType.BY_DATE_UPDATED
+            SortType.BY_DATE_UPDATED -> SortType.BY_TITLE
+        }
+        updateOutfitItemsSortedBy(currentClothesSortType)
+    }
 
-    // ClothesOutfit
+    fun updateOutfitItemsSortedBy(sortType: SortType) {
+        currentClothesSortType = sortType
+        readAllClothes = when (sortType) {
+            SortType.BY_TITLE -> clothesRepository.getClothingItemsSortedByTitle()
+            SortType.BY_DATE_UPDATED -> clothesRepository.getClothingItemsSortedByDateUpdated()
+        }
+    }
+
+    fun isOutfitImagePathUsed(imagePath: String?): Boolean {
+        return outfitRepository.isImagePathUsed(imagePath)
+    }
+
+
+        // ClothesOutfit
     fun addClothingItemOutfitCrossRef(clothingItemOutfitCrossRef: ClothingItemOutfitCrossRef) {
         viewModelScope.launch(Dispatchers.IO) {
-            clothingItemOutfitCrossRefRepository.addClothingItemOutfitCrossRef(clothingItemOutfitCrossRef)
+            clothingItemOutfitCrossRefRepository.addClothingItemOutfitCrossRef(
+                clothingItemOutfitCrossRef
+            )
         }
     }
 
     fun deleteClothingItemOutfitCrossRef(clothingItemOutfitCrossRef: ClothingItemOutfitCrossRef) {
         viewModelScope.launch(Dispatchers.IO) {
-            clothingItemOutfitCrossRefRepository.deleteClothingItemOutfitCrossRef(clothingItemOutfitCrossRef)
+            clothingItemOutfitCrossRefRepository.deleteClothingItemOutfitCrossRef(
+                clothingItemOutfitCrossRef
+            )
         }
     }
 }
