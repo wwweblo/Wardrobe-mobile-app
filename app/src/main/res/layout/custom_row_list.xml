@@ -13,7 +13,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:text="Title"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,24 +22,35 @@
         android:id="@+id/list_adapter_season"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="43dp"
         android:text="Season"
         android:textSize="14sp"
         android:textStyle="italic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_adapter_title" />
+        app:layout_constraintStart_toEndOf="@+id/list_adapter_type"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/list_adapter_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="5dp"
         android:paddingBottom="5dp"
         android:text="Description"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/list_adapter_season" />
+
+    <TextView
+        android:id="@+id/list_adapter_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:text="Type"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_adapter_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

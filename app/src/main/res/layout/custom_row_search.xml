@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,7 +21,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:text="Title"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,8 +30,20 @@
             android:id="@+id/search_adapter_season"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Season"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@+id/search_adapter_type"
+            app:layout_constraintTop_toBottomOf="@+id/search_adapter_title" />
+
+        <TextView
+            android:id="@+id/search_adapter_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="5dp"
             android:text="Season"
             android:textSize="14sp"
             android:textStyle="italic"
@@ -42,10 +55,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="5dp"
             android:paddingBottom="5dp"
             android:text="Description"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_adapter_season" />
 

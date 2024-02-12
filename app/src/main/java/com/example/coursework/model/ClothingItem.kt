@@ -12,7 +12,7 @@ data class ClothingItem (
     val id: Int,
     val image: String?,
     val title: String,
-    val type: String?,
+    val type: String,
     val season: String,
     val description: String,
 

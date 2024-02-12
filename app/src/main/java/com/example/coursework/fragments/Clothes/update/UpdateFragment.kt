@@ -40,6 +40,7 @@ class UpdateFragment : Fragment() {
     private lateinit var imageButton: ImageButton
     private lateinit var titleInput: EditText
     private lateinit var seasonSpinner: Spinner
+    private lateinit var typeImput:EditText
     private lateinit var descriptionInput: EditText
     private lateinit var updateButton: Button
     private lateinit var deleteButton: FloatingActionButton
@@ -64,6 +65,7 @@ class UpdateFragment : Fragment() {
         imageButton = view.findViewById(R.id.update_imageButton)
         titleInput = view.findViewById(R.id.update_title_input)
         seasonSpinner = view.findViewById(R.id.update_season_spinner)
+        typeImput = view.findViewById(R.id.update_type_input)
         descriptionInput = view.findViewById(R.id.update_description_input)
         updateButton = view.findViewById(R.id.update_update_button)
         deleteButton = view.findViewById(R.id.update_delete_button)
@@ -98,7 +100,7 @@ class UpdateFragment : Fragment() {
             showToast(getString(R.string.season_spinner_error))
         }
 
-
+        typeImput.setText(args.currentClothingItem.type)
         descriptionInput.setText(args.currentClothingItem.description)
 
 
@@ -261,28 +263,25 @@ class UpdateFragment : Fragment() {
 
     // Метод для обновления элемента в базе данных
     private fun updateItem() {
-        val title = titleInput.text.toString()
+        val title = titleInput.text.toString().takeIf { it.isNotBlank() } ?: "No title"
         val season = seasonSpinner.selectedItem.toString()
-        val description = descriptionInput.text.toString()
+        val type = typeImput.text.toString().takeIf { it.isNotBlank() } ?: "No type"
+        val description = descriptionInput.text.toString().takeIf { it.isNotBlank() } ?: "No description"
 
-        if (emptyStringCheck(title)) {
-            val updatedClothingItem = ClothingItem(
-                id = args.currentClothingItem.id,
-                image = currentImagePath,
-                title = title,
-                type = null,
-                season = season,
-                description = description,
-                dateUpdated = System.currentTimeMillis()
-            )
+        val updatedClothingItem = ClothingItem(
+            id = args.currentClothingItem.id,
+            image = currentImagePath,
+            title = title,
+            type = type,
+            season = season,
+            description = description,
+            dateUpdated = System.currentTimeMillis()
+        )
 
-            mClothingItemView.updateClothingItem(updatedClothingItem)
-            showToast(getString(R.string.on_updated_message))
+        mClothingItemView.updateClothingItem(updatedClothingItem)
+        showToast(getString(R.string.on_updated_message))
 
-            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
-        } else {
-            showToast(getString(R.string.empty_title_error))
-        }
+        findNavController().navigate(R.id.action_updateFragment_to_listFragment)
     }
 
 }

@@ -8,7 +8,7 @@
     <string name="on_added_message">Added👍</string>
     <string name="on_updated_message">Updated👍</string>
     <string name="on_deleted_message">Deleted😰</string>
-    <string name="empty_title_error">Title can`t be empty</string>
+    <string name="empty_title_error">Title and type can`t be empty</string>
 
     <string name="no_image_error">Can`t find the image</string>
     <string name="missed_image_error">No image on saved path</string>
@@ -19,9 +19,13 @@
     <string name="season_spinner_error">There is unexpected season🤔</string>
     <string-array name="seasons">
         <item>Spring</item>
+        <item>Spring-Summer</item>
         <item>Summer</item>
+        <item>Summer-Fall</item>
         <item>Fall</item>
+        <item>Fall-Winter</item>
         <item>Winter</item>
+        <item>Winter-Spring</item>
         <item>Demi-season</item>
         <item>All year</item>
     </string-array>

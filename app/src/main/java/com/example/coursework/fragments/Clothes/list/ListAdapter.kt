@@ -14,8 +14,8 @@ class ListAdapter:RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     private var clothingItemList = emptyList<ClothingItem>()
 
-    private var titleLengthLimit = 23
-    private var descriptionLengthLimit = 30
+    private var titleLengthLimit = 35
+    private var descriptionLengthLimit = 50
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -33,6 +33,9 @@ class ListAdapter:RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         //Title
         val titleTextView = holder.itemView.findViewById<TextView>(R.id.list_adapter_title)
         textViewLimit(titleTextView, currentItem.title, titleLengthLimit)
+
+        //Type
+        holder.itemView.findViewById<TextView>(R.id.list_adapter_type).text = currentItem.type
 
         //Season
         holder.itemView.findViewById<TextView>(R.id.list_adapter_season).text = currentItem.season

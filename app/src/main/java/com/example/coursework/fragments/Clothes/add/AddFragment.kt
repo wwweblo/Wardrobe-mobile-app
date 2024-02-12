@@ -39,6 +39,12 @@ class AddFragment : Fragment() {
     private val IMAGE_DIRECTORY = "ClothingImages"
     private var currentImagePath: String? = null
 
+    private lateinit var titleInput: EditText
+    private lateinit var seasonSpinner: Spinner
+    private lateinit var typeImput:EditText
+    private lateinit var descriptionInput: EditText
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +53,12 @@ class AddFragment : Fragment() {
         mClothingItemView = ViewModelProvider(this).get(ClothesViewModel::class.java)
 
         setupSeasonSpinner(view)
+
+        titleInput = view.findViewById(R.id.add_title_input)
+        seasonSpinner = view.findViewById(R.id.add_season_spinner)
+        typeImput = view.findViewById(R.id.add_type_input)
+        descriptionInput = view.findViewById(R.id.add_description_input)
+
 
         imageButton = view.findViewById(R.id.add_imageButton)
         imageButton.setOnClickListener {
@@ -170,17 +182,17 @@ class AddFragment : Fragment() {
     }
 
     private fun insertDataToDatabase(view: View) {
-        val title = view.findViewById<EditText>(R.id.add_title_input).text.toString()
-        val seasonSpinner = view.findViewById<Spinner>(R.id.add_season_spinner)
+        val title = titleInput.text.toString().takeIf { it.isNotBlank() } ?: "No title"
         val season = seasonSpinner.selectedItem.toString()
-        val description = view.findViewById<EditText>(R.id.add_description_input).text.toString()
+        val type = typeImput.text.toString().takeIf { it.isNotBlank() } ?: "No type"
+        val description = descriptionInput.text.toString().takeIf { it.isNotBlank() } ?: "No description"
 
         if (emptyStringCheck(title)) {
             val clothingItem = ClothingItem(
                 id = 0,
                 image = currentImagePath,
                 title = title,
-                type = null,
+                type = type,
                 season = season,
                 description = description,
                 dateUpdated = System.currentTimeMillis()

@@ -65,6 +65,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/update_imageButton_cardView" />
 
+    <EditText
+        android:id="@+id/update_type_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="Type"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_cardView" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/spinner_cardView"
         android:layout_width="210dp"
@@ -94,20 +107,17 @@
         android:hint="Description"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/update_type_input" />
 
     <Button
         android:id="@+id/update_update_button"
+        style="@style/blue_button"
         android:layout_width="131dp"
         android:layout_height="53dp"
-        android:layout_marginTop="38dp"
-        android:backgroundTint="@color/blue"
+        android:layout_marginTop="12dp"
         android:text="Update"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

@@ -77,7 +77,8 @@ class SearchFragment : Fragment() {
             val filteredList = clothingItems.filter { item ->
                 item.title.contains(searchText, ignoreCase = true) ||
                         item.season.contains(searchText, ignoreCase = true) ||
-                        item.description.contains(searchText, ignoreCase = true)
+                        item.description.contains(searchText, ignoreCase = true) ||
+                        item.type.contains(searchText, ignoreCase = true)
             }
             adapter.setData(filteredList)
         })
