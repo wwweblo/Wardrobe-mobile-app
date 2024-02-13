@@ -9,65 +9,68 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.fragments.Clothes.list.ListFragmentDirections
-import com.example.coursework.model.ClothingItem
 import com.example.coursework.model.Outfit
 
-class OutfitListAdapter:RecyclerView.Adapter<OutfitListAdapter.MyViewHolder>() {
+class OutfitListAdapter : RecyclerView.Adapter<OutfitListAdapter.MyViewHolder>() {
 
-    private var OutfitList = emptyList<Outfit>()
+    private var outfitList = emptyList<Outfit>()
 
-    private var titleLengthLimit = 35
-    private var descriptionLengthLimit = 50
-    class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){}
+    private val titleLengthLimit = 35
+    private val descriptionLengthLimit = 50
+
+    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.custom_row_list, parent, false))
+        return MyViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.custom_row_list,
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int {
-        //Возвращает колличество элементов
-        return OutfitList.size
+        return outfitList.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = OutfitList[position]
+        val currentItem = outfitList[position]
 
-        //Title
-        val titleTextView = holder.itemView.findViewById<TextView>(R.id.list_adapter_title)
-        textViewLimit(titleTextView, currentItem.title, titleLengthLimit)
+        holder.itemView.apply {
+            // Title
+            val titleTextView = findViewById<TextView>(R.id.list_adapter_title)
+            textViewLimit(titleTextView, currentItem.title, titleLengthLimit)
 
-        //Type
-        holder.itemView.findViewById<TextView>(R.id.list_adapter_type).text = currentItem.style
+            // Type
+            findViewById<TextView>(R.id.list_adapter_type).text = currentItem.style
 
-        //Season
-        holder.itemView.findViewById<TextView>(R.id.list_adapter_season).text = currentItem.season
+            // Season
+            findViewById<TextView>(R.id.list_adapter_season).text = currentItem.season
 
-        //Description
-        val descriptionTextView = holder.itemView.findViewById<TextView>(R.id.list_adapter_description)
-        textViewLimit(descriptionTextView, currentItem.description, descriptionLengthLimit)
+            // Description
+            val descriptionTextView = findViewById<TextView>(R.id.list_adapter_description)
+            textViewLimit(descriptionTextView, currentItem.description, descriptionLengthLimit)
 
-        //Передача эелемента на окно обновления
-        holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener{
-            val action = OutfitListFragmentDirections.actionOutfitListFragmentToOutfitUpdateFragment(currentItem)
-            holder.itemView.findNavController().navigate(action)
+            // Передача элемента на окно обновления
+            findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {
+                val action =
+                    OutfitListFragmentDirections.actionOutfitListFragmentToOutfitUpdateFragment(currentItem)
+                findNavController().navigate(action)
+            }
         }
     }
 
-    fun setData(outfit: List<Outfit>) {
-        this.OutfitList = outfit
-        updateItems(outfit)
+    fun setData(outfits: List<Outfit>) {
+        outfitList = outfits
+        notifyDataSetChanged()
     }
 
-    fun updateItems(outfit: List<Outfit>) {
-        this.OutfitList = outfit
-        //notifyDataSetChanged()
-    }
-
-    private fun textViewLimit(tv: TextView, text: String, limit: Int){
-        if (text.length > limit) {
-            tv.text = text.substring(0, titleLengthLimit) + "..."
+    private fun textViewLimit(tv: TextView, text: String, limit: Int) {
+        tv.text = if (text.length > limit) {
+            text.substring(0, limit) + "..."
         } else {
-            tv.text = text
+            text
         }
     }
 }
