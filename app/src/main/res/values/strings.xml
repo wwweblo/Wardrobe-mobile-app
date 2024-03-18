@@ -26,8 +26,10 @@
         <item>Fall-Winter</item>
         <item>Winter</item>
         <item>Winter-Spring</item>
-        <item>Demi-season</item>
         <item>All year</item>
     </string-array>
+
+    <string name="delete">Delete</string>
+    <string name="more">More</string>
 
 </resources>

@@ -9,6 +9,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,15 +18,16 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.coursework.R
-import com.example.coursework.model.ClothingItem
 import com.example.coursework.model.Outfit
 import com.example.coursework.viewModel.ClothesViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -44,7 +46,7 @@ class OutfitUpdateFragment : Fragment() {
     private lateinit var styleInput: EditText
     private lateinit var descriptionInput: EditText
     private lateinit var updateButton: Button
-    private lateinit var deleteButton: FloatingActionButton
+    private lateinit var menuButton: FloatingActionButton
     private lateinit var backButton: FloatingActionButton
 
     private val args by navArgs<OutfitUpdateFragmentArgs>()
@@ -69,7 +71,7 @@ class OutfitUpdateFragment : Fragment() {
         styleInput = view.findViewById(R.id.outfit_update_style_input)
         descriptionInput = view.findViewById(R.id.outfit_update_description_input)
         updateButton = view.findViewById(R.id.outfit_update_update_button)
-        deleteButton = view.findViewById(R.id.outfit_update_delete_button)
+        menuButton = view.findViewById(R.id.outfit_update_delete_button)
         backButton = view.findViewById(R.id.outfit_update_back_button)
 
 
@@ -116,8 +118,9 @@ class OutfitUpdateFragment : Fragment() {
             updateItem()
         }
 
-        deleteButton.setOnClickListener{
-            deleteItem()
+        menuButton.setOnClickListener{
+            showMenu()
+            //deleteItem()
         }
 
         backButton.setOnClickListener {
@@ -126,6 +129,28 @@ class OutfitUpdateFragment : Fragment() {
 
         return view
     }
+
+    private fun showMenu() {
+        val popupMenu = PopupMenu(requireContext(), menuButton, Gravity.END)
+        popupMenu.inflate(R.menu.update_outfit_menu)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.more -> {
+                    showToast("More")
+                    true
+                }
+                R.id.delete -> {
+                    showToast("Delete")
+                    //deleteItem()
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
+    }
+
+
 
 
     // Метод для отображения диалога подтверждения удаления элемента
