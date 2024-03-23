@@ -275,7 +275,8 @@ class UpdateFragment : Fragment() {
             type = type,
             season = season,
             description = description,
-            dateUpdated = System.currentTimeMillis()
+            dateUpdated = System.currentTimeMillis(),
+            isSelected = false
         )
 
         mClothingItemView.updateClothingItem(updatedClothingItem)

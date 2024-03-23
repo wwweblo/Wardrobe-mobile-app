@@ -194,7 +194,8 @@ class AddFragment : Fragment() {
             type = type,
             season = season,
             description = description,
-            dateUpdated = System.currentTimeMillis()
+            dateUpdated = System.currentTimeMillis(),
+            isSelected = false
         )
         mClothingItemView.addClothingItem(clothingItem)
         showToast(getString(R.string.on_added_message))

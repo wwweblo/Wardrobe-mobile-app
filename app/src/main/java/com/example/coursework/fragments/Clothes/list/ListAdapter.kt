@@ -3,6 +3,7 @@ package com.example.coursework.fragments.Clothes.list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
@@ -19,7 +20,9 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         private const val DESCRIPTION_LENGTH_LIMIT = 50
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        val checkboxSelected: CheckBox = itemView.findViewById(R.id.custom_row_select)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -50,11 +53,23 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
             val descriptionTextView = findViewById<TextView>(R.id.list_adapter_description)
             textViewLimit(descriptionTextView, currentItem.description, DESCRIPTION_LENGTH_LIMIT)
 
+
+
             // Передача элемента на окно обновления
             findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {
                 val action =
                     ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
                 findNavController().navigate(action)
+            }
+
+            // Установка значения CheckBox
+            holder.checkboxSelected.isChecked = currentItem.isSelected ?: false
+
+            // Обработчик нажатия на CheckBox
+            holder.checkboxSelected.setOnCheckedChangeListener { _, isChecked ->
+                // Обновление значения в базе данных
+                currentItem.isSelected = isChecked
+
             }
         }
     }
@@ -71,6 +86,11 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         } else {
             tv.text = text
         }
+    }
+
+    fun resetSelection() {
+        clothingItems.forEach { it.isSelected = false }
+        notifyDataSetChanged()
     }
 
 }

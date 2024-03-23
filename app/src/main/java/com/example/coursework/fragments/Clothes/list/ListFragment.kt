@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -71,15 +72,28 @@ class ListFragment : Fragment() {
 
             updateAdapter()
         }
+
+        //Отмена выбора элементов
+        val canselButton = view.findViewById<Button>(R.id.list_cansel_button)
+        canselButton.setOnClickListener {
+            adapter.resetSelection()
+        }
     }
 
 
     private fun updateAdapter(){
-        mClothesViewModel.readAllClothes.observe(viewLifecycleOwner, Observer { clothingItem ->
-            adapter.setData(clothingItem)
+        mClothesViewModel.readAllClothes.observe(viewLifecycleOwner, Observer { clothingItems ->
+            adapter.setData(clothingItems)
             updateListTitle() // Обновляем текст после обновления данных
+
+//            // Проверяем наличие элементов с isSelected == true
+//            val hasSelectedItem = clothingItems.any { it.isSelected == true }
+//
+//            // Скрываем или показываем кнопку в зависимости от наличия выбранных элементов
+//            view?.findViewById<Button>(R.id.list_cansel_button)?.visibility = if (hasSelectedItem) View.VISIBLE else View.GONE
         })
     }
+
 
     private var toast: Toast? = null
     private fun showToast(message: String) {

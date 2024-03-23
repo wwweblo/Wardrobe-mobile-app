@@ -13,6 +13,7 @@
     <string name="no_image_error">You have not added image</string>
     <string name="missed_image_error">No image on saved path</string>
 
+    <string name="cansel_selection">cansel selection</string>
     <string name="sort_type_title">Sorted by title</string>
     <string name="sort_type_last_update">Sorted by last update</string>
 
