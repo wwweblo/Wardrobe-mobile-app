@@ -33,4 +33,6 @@
     <string name="delete">Delete</string>
     <string name="more">More</string>
 
+    <string name="choose_clothes_to_add">Выберите одежду для добавления в образ</string>
+
 </resources>

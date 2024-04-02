@@ -78,6 +78,32 @@ class ListFragment : Fragment() {
         canselButton.setOnClickListener {
             adapter.resetSelection()
         }
+
+        var addToOutFitButton = view.findViewById<ImageButton>(R.id.list_more_button)
+        addToOutFitButton.setOnClickListener{
+            // Получаем список всех элементов из ViewModel
+            val allClothingItems = mClothesViewModel.readAllClothes.value ?: emptyList()
+
+            // Отфильтровываем список, оставляя только выбранные элементы
+            val selectedClothingItems = allClothingItems.filter { it.isSelected ?: false }
+
+            // Если массив выбранных элементов не пустой, формируем и передаем его
+            if (selectedClothingItems.isNotEmpty()) {
+                // Формируем массив из выбранных элементов
+                val selectedItemsArray = selectedClothingItems.toTypedArray()
+
+                // Создаем Bundle для передачи данных в следующий фрагмент
+                val bundle = Bundle().apply {
+                    putSerializable("selectedItems", selectedItemsArray)
+                }
+
+                // Навигация на addToOutfitFragment с передачей Bundle
+                findNavController().navigate(R.id.action_listFragment_to_addToOutfitFragment, bundle)
+            } else {
+                // Если массив пуст, отображаем сообщение пользователю
+                showToast(getString(R.string.choose_clothes_to_add))
+            }
+        }
     }
 
 

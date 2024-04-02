@@ -155,6 +155,11 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    // Метод для получения списка элементов одежды для определенного комплекта
+    fun getClothingItemsForOutfit(outfitId: Int): LiveData<List<ClothingItem>> {
+        return clothingItemOutfitCrossRefRepository.getClothingItemsForOutfit(outfitId)
+    }
+
     fun deleteClothingItemOutfitCrossRef(clothingItemOutfitCrossRef: ClothingItemOutfitCrossRef) {
         viewModelScope.launch(Dispatchers.IO) {
             clothingItemOutfitCrossRefRepository.deleteClothingItemOutfitCrossRef(
