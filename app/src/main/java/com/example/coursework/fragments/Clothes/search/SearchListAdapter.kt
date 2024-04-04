@@ -35,7 +35,7 @@ class SearchListAdapter : RecyclerView.Adapter<SearchListAdapter.MyViewHolder>()
         textViewLimit(titleTextView, currentItem.title, titleLengthLimit)
 
         //Type
-        holder.itemView.findViewById<TextView>(R.id.list_adapter_type).text = currentItem.type
+        holder.itemView.findViewById<TextView>(R.id.list_adapter_style).text = currentItem.type
 
         //Season
         holder.itemView.findViewById<TextView>(R.id.list_adapter_season).text = currentItem.season

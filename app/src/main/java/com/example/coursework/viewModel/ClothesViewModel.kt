@@ -95,6 +95,7 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
 
     fun deleteClothingItem(clothingItem: ClothingItem) {
         viewModelScope.launch(Dispatchers.IO) {
+            clothingItemOutfitCrossRefRepository.deleteCrossRefsForClothingItem(clothingItem.id)
             clothesRepository.deleteClothingItem(clothingItem)
         }
     }
@@ -121,6 +122,7 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
 
     fun deleteOutfit(outfit: Outfit) {
         viewModelScope.launch(Dispatchers.IO) {
+            clothingItemOutfitCrossRefRepository.deleteCrossRefsForOutfit(outfit.id)    //Удаляем связи перед удалением самой записи
             outfitRepository.deleteOutfit(outfit)
         }
     }

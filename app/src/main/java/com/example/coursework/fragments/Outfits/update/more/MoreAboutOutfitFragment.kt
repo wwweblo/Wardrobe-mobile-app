@@ -52,10 +52,10 @@ class MoreAboutOutfitFragment : Fragment() {
         //ViewModel
         mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
 
-        var backButton = view.findViewById<FloatingActionButton>(R.id.more_back_button)
-        backButton.setOnClickListener{
-            findNavController().navigate(R.id.action_moreAboutOutfitFragment_to_listFragment)
-        }
+//        var backButton = view.findViewById<FloatingActionButton>(R.id.more_back_button)
+//        backButton.setOnClickListener{
+//            findNavController().navigate(R.id.action_moreAboutOutfitFragment_to_listFragment)
+//        }
 
         // Обновляем адаптер и текст в случае изменения данных
         updateAdapter()

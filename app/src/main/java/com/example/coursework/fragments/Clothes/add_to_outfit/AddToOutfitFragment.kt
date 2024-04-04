@@ -15,10 +15,11 @@ import com.example.coursework.fragments.Outfits.list.OutfitListAdapter
 import com.example.coursework.viewModel.ClothesViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class AddToOutfitFragment : Fragment() {
+class AddToOutfitFragment : Fragment(), AddToOutfitAdapter.OnItemClickListener {
 
     private lateinit var mClothesViewModel: ClothesViewModel
     private lateinit var adapter: AddToOutfitAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,11 +27,13 @@ class AddToOutfitFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_to_outfit, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // RecyclerView
         adapter = AddToOutfitAdapter()
+        adapter.setOnItemClickListener(this)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -38,14 +41,26 @@ class AddToOutfitFragment : Fragment() {
         // ViewModel
         mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
 
-        // Обновляем адаптер и текст в случае изменения данных
+        // Обновляем адаптер в случае изменения данных
         updateAdapter()
-        
+
+        val backButton = view.findViewById<FloatingActionButton>(R.id.add_to_outfit_back_button)
+        backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
     }
-    private fun updateAdapter(){
+
+    private fun updateAdapter() {
         mClothesViewModel.readAllOutfits.observe(viewLifecycleOwner, Observer { outfits ->
             adapter.setData(outfits)
         })
     }
 
+    override fun onItemClick(outfitId: Int) {
+        // Выполнение действий при нажатии на элемент RecyclerView
+        // Например, передача outfitId на следующий фрагмент
+        val action = AddToOutfitFragmentDirections.actionAddToOutfitFragmentToMoreAboutOutfitFragment(outfitId)
+        findNavController().navigate(R.id.action_addToOutfitFragment_to_moreAboutOutfitFragment)
+    }
 }

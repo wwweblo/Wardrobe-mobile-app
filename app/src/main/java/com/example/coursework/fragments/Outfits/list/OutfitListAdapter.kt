@@ -8,7 +8,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
-import com.example.coursework.fragments.Clothes.list.ListFragmentDirections
 import com.example.coursework.model.Outfit
 
 class OutfitListAdapter : RecyclerView.Adapter<OutfitListAdapter.MyViewHolder>() {
@@ -43,7 +42,7 @@ class OutfitListAdapter : RecyclerView.Adapter<OutfitListAdapter.MyViewHolder>()
             textViewLimit(titleTextView, currentItem.title, titleLengthLimit)
 
             // Type
-            findViewById<TextView>(R.id.list_adapter_type).text = currentItem.style
+            findViewById<TextView>(R.id.list_adapter_style).text = currentItem.style
 
             // Season
             findViewById<TextView>(R.id.list_adapter_season).text = currentItem.season

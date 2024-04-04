@@ -3,7 +3,6 @@ package com.example.coursework.fragments.Outfits.update.more
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
@@ -46,7 +45,7 @@ class MoreAboutOutfitAdapter : RecyclerView.Adapter<MoreAboutOutfitAdapter.MyVie
             textViewLimit(titleTextView, currentItem.title, TITLE_LENGTH_LIMIT)
 
             // Type
-            findViewById<TextView>(R.id.list_adapter_type).text = currentItem.type
+            findViewById<TextView>(R.id.list_adapter_style).text = currentItem.type
 
             // Season
             findViewById<TextView>(R.id.list_adapter_season).text = currentItem.season

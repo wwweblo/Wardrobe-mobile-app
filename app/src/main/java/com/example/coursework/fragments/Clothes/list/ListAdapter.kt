@@ -44,7 +44,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
             textViewLimit(titleTextView, currentItem.title, TITLE_LENGTH_LIMIT)
 
             // Type
-            findViewById<TextView>(R.id.list_adapter_type).text = currentItem.type
+            findViewById<TextView>(R.id.list_adapter_style).text = currentItem.type
 
             // Season
             findViewById<TextView>(R.id.list_adapter_season).text = currentItem.season

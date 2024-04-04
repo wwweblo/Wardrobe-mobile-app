@@ -27,4 +27,14 @@ class ClothingItemOutfitCrossRefRepository(private val dao: ClothingItemOutfitCr
     fun getOutfitsForClothingItem(clothingItemId: Int): LiveData<List<Outfit>> {
         return dao.getOutfitsForClothingItem(clothingItemId)
     }
+
+    //Удаление всязи для конкретного элемента Outfit
+    fun deleteCrossRefsForOutfit(outfitId: Int) {
+        return dao.deleteCrossRefsForOutfit(outfitId)
+    }
+
+    // Функция для удаления всех перекрестных ссылок для определенного ClothingItem
+    fun deleteCrossRefsForClothingItem(clothingItemId: Int) {
+        dao.deleteCrossRefsForClothingItem(clothingItemId)
+    }
 }
