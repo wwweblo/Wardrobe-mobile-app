@@ -42,7 +42,10 @@ class AddToOutfitFragment : Fragment(){
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        //Получаем выбранные Clothing Items
         val selectedClothingItems = arguments?.getParcelableArray("selected_clothing_items") as? Array<ClothingItem>
+        // Устанавливаем выбранные элементы одежды в адаптер
+        adapter.setSelectedClothingItems(selectedClothingItems.orEmpty().toList())
 
         // Обновляем адаптер в случае изменения данных
         updateAdapter()

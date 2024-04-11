@@ -6,10 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.navArgument
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
+import com.example.coursework.fragments.Clothes.list.ListAdapter
 import com.example.coursework.fragments.Clothes.list.ListFragmentDirections
+import com.example.coursework.fragments.Clothes.update.UpdateFragmentArgs
 import com.example.coursework.model.ClothingItem
 import com.example.coursework.model.ClothingItemOutfitCrossRef
 import com.example.coursework.model.Outfit
@@ -19,6 +22,8 @@ import com.example.coursework.viewModel.ClothesViewModel
 class AddToOutfitAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapter<AddToOutfitAdapter.MyViewHolder>() {
 
     private var outfits = emptyList<Outfit>()
+    private var selectedClothingItems: List<ClothingItem> = emptyList()
+
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -27,7 +32,6 @@ class AddToOutfitAdapter(private val viewModel: ClothesViewModel) : RecyclerView
                 .inflate(R.layout.custom_row_list_without_checkbox, parent, false)
         )
     }
-
     override fun getItemCount(): Int {
         return outfits.size
     }
@@ -50,6 +54,10 @@ class AddToOutfitAdapter(private val viewModel: ClothesViewModel) : RecyclerView
 
             // Передача элемента на окно обновления
             findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {
+                //создаем связи между selectedClothingItems и нажатым элементом
+                insertSelectedClothingItemsForOutfit(currentItem.id, selectedClothingItems)
+
+                //Переводим пользователя
                 val action =
                     AddToOutfitFragmentDirections.actionAddToOutfitFragmentToMoreAboutOutfitFragment(currentItem)
                 findNavController().navigate(action)
@@ -62,9 +70,25 @@ class AddToOutfitAdapter(private val viewModel: ClothesViewModel) : RecyclerView
         this.outfits = outfits
         notifyDataSetChanged()
     }
+    //Метод для получения selectedClothingItems с фрагмента
+    fun setSelectedClothingItems(selectedClothingItems: List<ClothingItem>) {
+        this.selectedClothingItems = selectedClothingItems
+        notifyDataSetChanged()
+    }
 
-    fun insertSelectedClothingItemsForOutfit(outfitId: Int, selectedClothingItems: List<ClothingItem>) {
+    private fun insertSelectedClothingItemsForOutfit(outfitId: Int, selectedClothingItems: List<ClothingItem>) {
 
+        //Для каждого элемента из selectedClothingItems создаем ClothingItemOutfitCrossRef
+        val clothingItemOutfitCrossRefs = selectedClothingItems.map { clothingItem ->
+            ClothingItemOutfitCrossRef(
+                clothingItemId = clothingItem.id,
+                outfitId = outfitId
+            )
+        }
+        // Добавляем каждую связь ClothingItemOutfitCrossRef в базу данных через ViewModel
+        clothingItemOutfitCrossRefs.forEach { clothingItemOutfitCrossRef ->
+            viewModel.addClothingItemOutfitCrossRef(clothingItemOutfitCrossRef)
+        }
     }
 
 }
