@@ -22,7 +22,7 @@ class OutfitListAdapter : RecyclerView.Adapter<OutfitListAdapter.MyViewHolder>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.custom_row_list,
+                R.layout.custom_row_list_without_checkbox,
                 parent,
                 false
             )

@@ -8,14 +8,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.fragments.Outfits.list.OutfitListAdapter
+import com.example.coursework.model.ClothingItem
 import com.example.coursework.viewModel.ClothesViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class AddToOutfitFragment : Fragment(), AddToOutfitAdapter.OnItemClickListener {
+class AddToOutfitFragment : Fragment(){
 
     private lateinit var mClothesViewModel: ClothesViewModel
     private lateinit var adapter: AddToOutfitAdapter
@@ -31,15 +33,16 @@ class AddToOutfitFragment : Fragment(), AddToOutfitAdapter.OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // ViewModel
+        mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
+
         // RecyclerView
-        adapter = AddToOutfitAdapter()
-        adapter.setOnItemClickListener(this)
+        adapter = AddToOutfitAdapter(mClothesViewModel)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // ViewModel
-        mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
+        val selectedClothingItems = arguments?.getParcelableArray("selected_clothing_items") as? Array<ClothingItem>
 
         // Обновляем адаптер в случае изменения данных
         updateAdapter()
@@ -55,12 +58,5 @@ class AddToOutfitFragment : Fragment(), AddToOutfitAdapter.OnItemClickListener {
         mClothesViewModel.readAllOutfits.observe(viewLifecycleOwner, Observer { outfits ->
             adapter.setData(outfits)
         })
-    }
-
-    override fun onItemClick(outfitId: Int) {
-        // Выполнение действий при нажатии на элемент RecyclerView
-        // Например, передача outfitId на следующий фрагмент
-        val action = AddToOutfitFragmentDirections.actionAddToOutfitFragmentToMoreAboutOutfitFragment(outfitId)
-        findNavController().navigate(R.id.action_addToOutfitFragment_to_moreAboutOutfitFragment)
     }
 }

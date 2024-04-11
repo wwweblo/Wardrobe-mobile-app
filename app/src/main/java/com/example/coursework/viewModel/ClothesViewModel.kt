@@ -12,6 +12,7 @@ import com.example.coursework.model.ClothingItemOutfitCrossRef
 import com.example.coursework.model.Outfit
 import com.example.coursework.repository.ClothingItemOutfitCrossRefRepository
 import com.example.coursework.repository.OutfitRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -98,6 +99,26 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
             clothingItemOutfitCrossRefRepository.deleteCrossRefsForClothingItem(clothingItem.id)
             clothesRepository.deleteClothingItem(clothingItem)
         }
+    }
+
+    fun toggleClothingItemSelection(id: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            clothesRepository.toggleClothingItemSelection(id)
+        }
+    }
+    suspend fun isAnyItemSelected(): Boolean {
+        return clothesRepository.isAnyItemSelected()
+    }
+
+    // Метод для получения списка ClothingItem, связанных с Outfit
+    fun getConnectedClothingItems(outfitId: Int): List<ClothingItem> {
+        var clothingItems: List<ClothingItem> = emptyList()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            clothingItems = clothesRepository.getClothingItemsForOutfit(outfitId)
+        }
+
+        return clothingItems
     }
 
     fun deleteEveryClothingItem() {

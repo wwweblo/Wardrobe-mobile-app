@@ -10,8 +10,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.model.ClothingItem
+import com.example.coursework.viewModel.ClothesViewModel
 
-class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
+class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     private val clothingItems = mutableListOf<ClothingItem>()
 
@@ -20,15 +21,14 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         private const val DESCRIPTION_LENGTH_LIMIT = 50
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val checkboxSelected: CheckBox = itemView.findViewById(R.id.custom_row_select)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.custom_row_list, parent, false)
-        )
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.custom_row_list, parent, false)
+        return MyViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {
@@ -53,12 +53,9 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
             val descriptionTextView = findViewById<TextView>(R.id.list_adapter_description)
             textViewLimit(descriptionTextView, currentItem.description, DESCRIPTION_LENGTH_LIMIT)
 
-
-
             // Передача элемента на окно обновления
             findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {
-                val action =
-                    ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
+                val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
                 findNavController().navigate(action)
             }
 
@@ -69,7 +66,8 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
             holder.checkboxSelected.setOnCheckedChangeListener { _, isChecked ->
                 // Обновление значения в базе данных
                 currentItem.isSelected = isChecked
-
+                // Вызов метода toggleClothingItemSelection из ViewModel
+                viewModel.toggleClothingItemSelection(currentItem.id)
             }
         }
     }
@@ -87,10 +85,8 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
             tv.text = text
         }
     }
-
     fun resetSelection() {
         clothingItems.forEach { it.isSelected = false }
         notifyDataSetChanged()
     }
-
 }

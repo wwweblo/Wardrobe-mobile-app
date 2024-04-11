@@ -5,16 +5,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.findNavController
+import androidx.navigation.navArgument
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
+import com.example.coursework.fragments.Clothes.list.ListFragmentDirections
+import com.example.coursework.model.ClothingItem
+import com.example.coursework.model.ClothingItemOutfitCrossRef
 import com.example.coursework.model.Outfit
+import com.example.coursework.viewModel.ClothesViewModel
 
 
-class AddToOutfitAdapter : RecyclerView.Adapter<AddToOutfitAdapter.MyViewHolder>() {
+class AddToOutfitAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapter<AddToOutfitAdapter.MyViewHolder>() {
 
     private var outfits = emptyList<Outfit>()
-    private var itemClickListener: OnItemClickListener? = null
-
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -46,8 +50,11 @@ class AddToOutfitAdapter : RecyclerView.Adapter<AddToOutfitAdapter.MyViewHolder>
 
             // Передача элемента на окно обновления
             findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {
-                itemClickListener?.onItemClick(currentItem.id)
+                val action =
+                    AddToOutfitFragmentDirections.actionAddToOutfitFragmentToMoreAboutOutfitFragment(currentItem)
+                findNavController().navigate(action)
             }
+
         }
     }
 
@@ -56,11 +63,8 @@ class AddToOutfitAdapter : RecyclerView.Adapter<AddToOutfitAdapter.MyViewHolder>
         notifyDataSetChanged()
     }
 
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.itemClickListener = listener
+    fun insertSelectedClothingItemsForOutfit(outfitId: Int, selectedClothingItems: List<ClothingItem>) {
+
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(outfitId: Int)
-    }
 }

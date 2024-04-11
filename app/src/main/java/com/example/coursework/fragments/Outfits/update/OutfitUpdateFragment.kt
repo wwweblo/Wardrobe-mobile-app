@@ -22,7 +22,6 @@ import android.widget.PopupMenu
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -136,12 +135,13 @@ class OutfitUpdateFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.more -> {
-                    showToast("More")
+                    //showToast("More")
+                    MoreAboutOutfit()
                     true
                 }
                 R.id.delete -> {
-                    showToast("Delete")
-                    //deleteItem()
+                    showToast(getString(R.string.delete))
+                    DeleteItem()
                     true
                 }
                 else -> false
@@ -150,11 +150,14 @@ class OutfitUpdateFragment : Fragment() {
         popupMenu.show()
     }
 
-
+    private fun MoreAboutOutfit() {
+        val action = OutfitUpdateFragmentDirections.actionOutfitUpdateFragmentToMoreAboutOutfitFragment(args.currentOutfit)
+        findNavController().navigate(action)
+    }
 
 
     // Метод для отображения диалога подтверждения удаления элемента
-    private fun deleteItem() {
+    private fun DeleteItem() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Yes") { _, _ ->
             finallyDeleteItem()

@@ -95,6 +95,9 @@
         <argument
             android:name="currentOutfit"
             app:argType="com.example.coursework.model.Outfit" />
+        <action
+            android:id="@+id/action_outfitUpdateFragment_to_moreAboutOutfitFragment"
+            app:destination="@id/moreAboutOutfitFragment" />
     </fragment>
     <fragment
         android:id="@+id/moreAboutOutfitFragment"
@@ -109,6 +112,12 @@
         <action
             android:id="@+id/action_moreAboutOutfitFragment_to_addToOutfitFragment"
             app:destination="@id/addToOutfitFragment" />
+        <argument
+            android:name="currentOutfit"
+            app:argType="com.example.coursework.model.Outfit" />
+        <action
+            android:id="@+id/action_moreAboutOutfitFragment_to_outfitUpdateFragment"
+            app:destination="@id/outfitUpdateFragment" />
     </fragment>
     <fragment
         android:id="@+id/addToOutfitFragment"
@@ -123,9 +132,6 @@
         <action
             android:id="@+id/action_addToOutfitFragment_to_moreAboutOutfitFragment"
             app:destination="@id/moreAboutOutfitFragment" >
-            <argument
-                android:name="outfitId"
-                app:argType="integer" />
         </action>
     </fragment>
 </navigation>

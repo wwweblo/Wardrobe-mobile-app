@@ -40,6 +40,19 @@ class ClothesRepository(private val dao: ClothesDao) {
         return dao.getClothingItemsSortedByDateUpdated()
     }
 
+    suspend fun toggleClothingItemSelection(id: Int) {
+        dao.toggleClothingItemSelection(id)
+    }
+
+    suspend fun isAnyItemSelected():Boolean{
+        return  dao.isAnyItemSelected()
+    }
+
+    // Метод для получения списка ClothingItem, связанных с Outfit
+    suspend fun getClothingItemsForOutfit(outfitId: Int): List<ClothingItem> {
+        return dao.getClothingItemsForOutfit(outfitId)
+    }
+
     fun isImagePathUsed(imagePath: String?): Boolean {
         return dao.isImagePathUsed(imagePath)
     }

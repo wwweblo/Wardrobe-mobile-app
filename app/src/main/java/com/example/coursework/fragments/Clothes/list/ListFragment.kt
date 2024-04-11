@@ -19,11 +19,20 @@ import com.example.coursework.R
 import com.example.coursework.viewModel.ClothesViewModel
 import com.example.coursework.viewModel.SortType
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ListFragment : Fragment() {
 
     private lateinit var mClothesViewModel: ClothesViewModel
     private lateinit var adapter: ListAdapter
+
+    private lateinit var canselButton: Button
+    private lateinit var addToOutFitButton: ImageButton
+    private lateinit var addButton: FloatingActionButton
+    private  lateinit var searchButton: ImageButton
+    private  lateinit var sortButton: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,32 +45,33 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //ViewModel
+        mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
+
         //RecyclerView
-        adapter = ListAdapter()
+        adapter = ListAdapter(mClothesViewModel)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        //ViewModel
-        mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
+        //Инициализация кнопок
+        addButton = view.findViewById(R.id.list_add_button)
+        searchButton = view.findViewById(R.id.list_search_button)
+        sortButton = view.findViewById(R.id.list_sort_button)
+        canselButton = view.findViewById(R.id.list_cansel_button)
+        addToOutFitButton = view.findViewById(R.id.list_more_button)
 
-        //Обновляем адаптер и текст в случае изменения данных
-        updateAdapter()
-
-        //Кнопка добавления новой одежды
-        val addButton = view.findViewById<FloatingActionButton>(R.id.list_add_button)
+        //Добавление
         addButton.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
 
-        //Кнопка поиска
-        val searchButton = view.findViewById<ImageButton>(R.id.list_search_button)
+        //Поиск
         searchButton.setOnClickListener{
             findNavController().navigate(R.id.action_listFragment_to_searchFragment)
         }
 
-        //Кнопка Сортировки
-        val sortButton = view.findViewById<ImageButton>(R.id.list_sort_button)
+        //Сортировка
         sortButton.setOnClickListener {
             mClothesViewModel.changeClothesSortType()
             val message = when (mClothesViewModel.currentClothesSortType) {
@@ -73,19 +83,18 @@ class ListFragment : Fragment() {
             updateAdapter()
         }
 
-        //Отмена выбора элементов
-        val canselButton = view.findViewById<Button>(R.id.list_cansel_button)
+        //Отмена выбора
         canselButton.setOnClickListener {
             adapter.resetSelection()
         }
 
-        var addToOutFitButton = view.findViewById<ImageButton>(R.id.list_more_button)
+        //Добавление в образ
         addToOutFitButton.setOnClickListener{
             // Получаем список всех элементов из ViewModel
-            val allClothingItems = mClothesViewModel.readAllClothes.value ?: emptyList()
+            val allClothingItems = mClothesViewModel.readAllClothes.value?: emptyList()
 
             // Отфильтровываем список, оставляя только выбранные элементы
-            val selectedClothingItems = allClothingItems.filter { it.isSelected ?: false }
+            val selectedClothingItems = allClothingItems.filter { it.isSelected?: false }
 
             // Если массив выбранных элементов не пустой, формируем и передаем его
             if (selectedClothingItems.isNotEmpty()) {
@@ -104,7 +113,11 @@ class ListFragment : Fragment() {
                 showToast(getString(R.string.choose_clothes_to_add))
             }
         }
+
+        // Обновляем адаптер
+        updateAdapter()
     }
+
 
 
     private fun updateAdapter(){
@@ -112,14 +125,32 @@ class ListFragment : Fragment() {
             adapter.setData(clothingItems)
             updateListTitle() // Обновляем текст после обновления данных
 
-//            // Проверяем наличие элементов с isSelected == true
-//            val hasSelectedItem = clothingItems.any { it.isSelected == true }
-//
-//            // Скрываем или показываем кнопку в зависимости от наличия выбранных элементов
-//            view?.findViewById<Button>(R.id.list_cansel_button)?.visibility = if (hasSelectedItem) View.VISIBLE else View.GONE
+            //Так как выполняется запрос в бд запускаем в дургом потоке
+            CoroutineScope(Dispatchers.IO).launch {
+                hideSelectionButtons()  //Скрывает кнопки: отмены выделения и добавления в outfit если ни один предмет не выбран
+            }
+
         })
     }
 
+    private suspend fun hideSelectionButtons() {
+//        val anyItemSelected = mClothesViewModel.isAnyItemSelected()
+//        if (!anyItemSelected) {
+//            // Ни у одного элемента не установлен isSelected в true
+//            canselButton?.visibility = View.GONE
+//            addToOutFitButton?.visibility = View.GONE
+//
+//            searchButton?.visibility = View.VISIBLE
+//            sortButton?.visibility = View.VISIBLE
+//        }
+//        else{
+//            canselButton?.visibility = View.VISIBLE
+//            addToOutFitButton?.visibility = View.VISIBLE
+//
+//            searchButton?.visibility = View.GONE
+//            sortButton?.visibility = View.GONE
+//        }
+    }
 
     private var toast: Toast? = null
     private fun showToast(message: String) {
