@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -33,6 +34,8 @@ class AddToOutfitFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         // ViewModel
         mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
 
@@ -43,8 +46,20 @@ class AddToOutfitFragment : Fragment(){
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         //Получаем выбранные Clothing Items
-        val selectedClothingItems = arguments?.getParcelableArray("selected_clothing_items") as? Array<ClothingItem>
+
+        val selectedClothingItems = arguments?.getParcelableArray("selectedItems") as? Array<ClothingItem>
         // Устанавливаем выбранные элементы одежды в адаптер
+        if (selectedClothingItems == null){
+            showToast(getString(R.string.empty_selected_clothes))
+        }
+        else
+        {
+            selectedClothingItems.forEach { item ->
+                item.isSelected = false
+                mClothesViewModel.updateClothingItem(item)
+            }
+
+        }
         adapter.setSelectedClothingItems(selectedClothingItems.orEmpty().toList())
 
         // Обновляем адаптер в случае изменения данных
@@ -61,5 +76,8 @@ class AddToOutfitFragment : Fragment(){
         mClothesViewModel.readAllOutfits.observe(viewLifecycleOwner, Observer { outfits ->
             adapter.setData(outfits)
         })
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

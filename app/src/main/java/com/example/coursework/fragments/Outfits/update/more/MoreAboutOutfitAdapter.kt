@@ -1,10 +1,13 @@
 package com.example.coursework.fragments.Outfits.update.more
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
@@ -12,9 +15,9 @@ import com.example.coursework.fragments.Clothes.list.ListFragmentDirections
 import com.example.coursework.model.ClothingItem
 import com.example.coursework.viewModel.ClothesViewModel
 
-class MoreAboutOutfitAdapter : RecyclerView.Adapter<MoreAboutOutfitAdapter.MyViewHolder>() {
+class MoreAboutOutfitAdapter(private val activity: FragmentActivity) : RecyclerView.Adapter<MoreAboutOutfitAdapter.MyViewHolder>() {
 
-    private lateinit var mClothesViewModel: ClothesViewModel
+    private var mClothesViewModel: ClothesViewModel = ViewModelProvider(activity).get(ClothesViewModel::class.java)
     private val clothingItems = mutableListOf<ClothingItem>()
     private var outfitId: Int = -1
 
@@ -56,8 +59,7 @@ class MoreAboutOutfitAdapter : RecyclerView.Adapter<MoreAboutOutfitAdapter.MyVie
 
             // Передача элемента на окно обновления
             findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {
-                val action =
-                    ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
+                val action = MoreAboutOutfitFragmentDirections.actionMoreAboutOutfitFragmentToUpdateFragment(currentItem)
                 findNavController().navigate(action)
             }
         }
@@ -79,4 +81,12 @@ class MoreAboutOutfitAdapter : RecyclerView.Adapter<MoreAboutOutfitAdapter.MyVie
             tv.text = text
         }
     }
+
+    fun submitList(clothingItems: List<ClothingItem>, outfitId: Int) {
+        this.outfitId = outfitId
+        this.clothingItems.clear()
+        this.clothingItems.addAll(clothingItems)
+        notifyDataSetChanged()
+    }
+
 }

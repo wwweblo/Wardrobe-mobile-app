@@ -103,8 +103,9 @@ class ListFragment : Fragment() {
 
                 // Создаем Bundle для передачи данных в следующий фрагмент
                 val bundle = Bundle().apply {
-                    putSerializable("selectedItems", selectedItemsArray)
+                    putParcelableArray("selectedItems", selectedItemsArray)
                 }
+
 
                 // Навигация на addToOutfitFragment с передачей Bundle
                 findNavController().navigate(R.id.action_listFragment_to_addToOutfitFragment, bundle)
@@ -129,8 +130,8 @@ class ListFragment : Fragment() {
             CoroutineScope(Dispatchers.IO).launch {
                 hideSelectionButtons()  //Скрывает кнопки: отмены выделения и добавления в outfit если ни один предмет не выбран
             }
-
         })
+
     }
 
     private suspend fun hideSelectionButtons() {

@@ -48,5 +48,5 @@ interface ClothesDao {
 
     @Transaction    //Transaction нужен для того, чтобы запрос выполнялся в 1 транзакции. Полезно для больших запросов
     @Query("SELECT * FROM ClothingItem INNER JOIN ClothingItemOutfitCrossRef ON ClothingItem.id = ClothingItemOutfitCrossRef.clothingItemId WHERE ClothingItemOutfitCrossRef.outfitId = :outfitId")
-    suspend fun getClothingItemsForOutfit(outfitId: Int): List<ClothingItem>
+    fun getClothingItemsForOutfit(outfitId: Int): LiveData<List<ClothingItem>>
 }

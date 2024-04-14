@@ -118,6 +118,9 @@
         <action
             android:id="@+id/action_moreAboutOutfitFragment_to_outfitUpdateFragment"
             app:destination="@id/outfitUpdateFragment" />
+        <action
+            android:id="@+id/action_moreAboutOutfitFragment_to_updateFragment"
+            app:destination="@id/updateFragment" />
     </fragment>
     <fragment
         android:id="@+id/addToOutfitFragment"

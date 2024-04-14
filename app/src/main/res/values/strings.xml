@@ -32,6 +32,8 @@
 
     <string name="delete">Delete</string>
     <string name="more">More</string>
+    <string name="null_outfit">Null Outfit</string>
+    <string name="empty_selected_clothes">Empty Selected Clothes</string>
 
     <string name="choose_clothes_to_add">Выберите одежду для добавления в образ</string>
 

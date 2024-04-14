@@ -3,6 +3,7 @@ package com.example.coursework.repository
 import androidx.lifecycle.LiveData
 import com.example.coursework.data.dao.ClothesDao
 import com.example.coursework.model.ClothingItem
+import kotlinx.coroutines.Dispatchers
 
 /*
 *   Репозиторий - класс, который предоставляет достум к нескольким източникам данных
@@ -49,7 +50,7 @@ class ClothesRepository(private val dao: ClothesDao) {
     }
 
     // Метод для получения списка ClothingItem, связанных с Outfit
-    suspend fun getClothingItemsForOutfit(outfitId: Int): List<ClothingItem> {
+    fun getClothingItemsForOutfit(outfitId: Int): LiveData<List<ClothingItem>> {
         return dao.getClothingItemsForOutfit(outfitId)
     }
 

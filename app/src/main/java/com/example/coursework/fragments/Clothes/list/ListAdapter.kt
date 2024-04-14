@@ -1,11 +1,13 @@
 package com.example.coursework.fragments.Clothes.list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
@@ -15,6 +17,7 @@ import com.example.coursework.viewModel.ClothesViewModel
 class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     private val clothingItems = mutableListOf<ClothingItem>()
+
 
     companion object {
         private const val TITLE_LENGTH_LIMIT = 35
@@ -68,6 +71,8 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
                 currentItem.isSelected = isChecked
                 // Вызов метода toggleClothingItemSelection из ViewModel
                 viewModel.toggleClothingItemSelection(currentItem.id)
+                Log.d("ListAdapter", "currentItem = (title->${currentItem.title}, isSelected->${currentItem.isSelected})")
+
             }
         }
     }

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -46,6 +47,19 @@ class OutfitListFragment : Fragment() {
         // Обновляем адаптер и текст в случае изменения данных
         updateAdapter()
 
+        val sortButton = view.findViewById<ImageButton>(R.id.outfit_list_sort_button)
+        //Сортировка
+        sortButton.setOnClickListener {
+            mClothesViewModel.changeOutfitSortType()
+            val message = when (mClothesViewModel.currentOutfitsSortType) {
+                SortType.BY_TITLE -> getString(R.string.sort_type_title)
+                SortType.BY_DATE_UPDATED -> getString(R.string.sort_type_last_update)
+            }
+            showToast(message)
+
+            updateAdapter()
+        }
+
         // Кнопка добавления нового комплекта
         val addButton = view.findViewById<FloatingActionButton>(R.id.outfit_list_add_button)
         addButton.setOnClickListener {
@@ -59,6 +73,17 @@ class OutfitListFragment : Fragment() {
             updateListTitle() // Обновляем текст после обновления данных
         })
     }
+
+    private var toast: Toast? = null
+    private fun showToast(message: String) {
+        // Отменяем текущее всплывающее сообщение, если оно существует
+        toast?.cancel()
+        // Создаем и показываем новое всплывающее сообщение
+        toast = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+        toast?.show()
+    }
+
+
 
     private fun updateListTitle() {
         val listTitle = view?.findViewById<TextView>(R.id.list_title)

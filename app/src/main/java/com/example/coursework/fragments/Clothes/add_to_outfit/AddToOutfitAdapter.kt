@@ -1,10 +1,13 @@
 package com.example.coursework.fragments.Clothes.add_to_outfit
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navArgument
@@ -52,17 +55,15 @@ class AddToOutfitAdapter(private val viewModel: ClothesViewModel) : RecyclerView
             // Description
             findViewById<TextView>(R.id.list_adapter_description).text = currentItem.description
 
-            // Передача элемента на окно обновления
+            // Передача элемента на окно More
             findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {
                 //создаем связи между selectedClothingItems и нажатым элементом
                 insertSelectedClothingItemsForOutfit(currentItem.id, selectedClothingItems)
 
                 //Переводим пользователя
-                val action =
-                    AddToOutfitFragmentDirections.actionAddToOutfitFragmentToMoreAboutOutfitFragment(currentItem)
+                val action = AddToOutfitFragmentDirections.actionAddToOutfitFragmentToMoreAboutOutfitFragment(currentItem)
                 findNavController().navigate(action)
             }
-
         }
     }
 
@@ -77,7 +78,6 @@ class AddToOutfitAdapter(private val viewModel: ClothesViewModel) : RecyclerView
     }
 
     private fun insertSelectedClothingItemsForOutfit(outfitId: Int, selectedClothingItems: List<ClothingItem>) {
-
         //Для каждого элемента из selectedClothingItems создаем ClothingItemOutfitCrossRef
         val clothingItemOutfitCrossRefs = selectedClothingItems.map { clothingItem ->
             ClothingItemOutfitCrossRef(
@@ -87,8 +87,11 @@ class AddToOutfitAdapter(private val viewModel: ClothesViewModel) : RecyclerView
         }
         // Добавляем каждую связь ClothingItemOutfitCrossRef в базу данных через ViewModel
         clothingItemOutfitCrossRefs.forEach { clothingItemOutfitCrossRef ->
+            Log.d("AddToOutfitAdapter", "new addClothingItemOutfitCrossRef (clothingItemId = ${clothingItemOutfitCrossRef.clothingItemId}, outfitId = ${clothingItemOutfitCrossRef.outfitId})")
             viewModel.addClothingItemOutfitCrossRef(clothingItemOutfitCrossRef)
         }
     }
+
+
 
 }

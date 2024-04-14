@@ -110,9 +110,8 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
         return clothesRepository.isAnyItemSelected()
     }
 
-    // Метод для получения списка ClothingItem, связанных с Outfit
-    fun getConnectedClothingItems(outfitId: Int): List<ClothingItem> {
-        var clothingItems: List<ClothingItem> = emptyList()
+    fun getConnectedClothingItems(outfitId: Int): LiveData<List<ClothingItem>> {
+        var clothingItems: LiveData<List<ClothingItem>> = MutableLiveData<List<ClothingItem>>()
 
         viewModelScope.launch(Dispatchers.IO) {
             clothingItems = clothesRepository.getClothingItemsForOutfit(outfitId)
@@ -157,10 +156,11 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun updateOutfitItemsSortedBy(sortType: SortType) {
-        currentClothesSortType = sortType
-        readAllClothes = when (sortType) {
-            SortType.BY_TITLE -> clothesRepository.getClothingItemsSortedByTitle()
-            SortType.BY_DATE_UPDATED -> clothesRepository.getClothingItemsSortedByDateUpdated()
+        currentOutfitsSortType = sortType
+        readAllOutfits = when (sortType) {
+            SortType.BY_TITLE -> outfitRepository.getAllOutfitsSortedByName()
+            SortType.BY_DATE_UPDATED -> outfitRepository.getAllOutfitsSortedByDate()
+            SortType.BY_DATE_UPDATED -> outfitRepository.getAllOutfitsSortedByDate()
         }
     }
 
@@ -182,6 +182,7 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
     fun getClothingItemsForOutfit(outfitId: Int): LiveData<List<ClothingItem>> {
         return clothingItemOutfitCrossRefRepository.getClothingItemsForOutfit(outfitId)
     }
+
 
     fun deleteClothingItemOutfitCrossRef(clothingItemOutfitCrossRef: ClothingItemOutfitCrossRef) {
         viewModelScope.launch(Dispatchers.IO) {
