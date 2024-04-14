@@ -27,4 +27,11 @@ interface ClothingItemOutfitCrossRefDao {
     // Получение всех комплектов для конкретного элемента одежды
     @Query("SELECT * FROM Outfit INNER JOIN ClothingItemOutfitCrossRef ON Outfit.id = ClothingItemOutfitCrossRef.outfitId WHERE ClothingItemOutfitCrossRef.clothingItemId = :clothingItemId")
     fun getOutfitsForClothingItem(clothingItemId: Int): LiveData<List<Outfit>>
+
+    //Удаление всязи для конкретного комплекта
+    @Query("DELETE FROM ClothingItemOutfitCrossRef WHERE outfitId = :outfitId")
+    fun deleteCrossRefsForOutfit(outfitId: Int)
+
+    @Query("DELETE FROM ClothingItemOutfitCrossRef WHERE clothingItemId = :clothingItemId")
+    fun deleteCrossRefsForClothingItem(clothingItemId: Int)
 }

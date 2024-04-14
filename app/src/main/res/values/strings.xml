@@ -10,9 +10,10 @@
     <string name="on_deleted_message">Deleted😰</string>
     <string name="empty_title_error">Title and type can`t be empty</string>
 
-    <string name="no_image_error">Can`t find the image</string>
+    <string name="no_image_error">You have not added image</string>
     <string name="missed_image_error">No image on saved path</string>
 
+    <string name="cansel_selection">cansel selection</string>
     <string name="sort_type_title">Sorted by title</string>
     <string name="sort_type_last_update">Sorted by last update</string>
 
@@ -26,8 +27,14 @@
         <item>Fall-Winter</item>
         <item>Winter</item>
         <item>Winter-Spring</item>
-        <item>Demi-season</item>
         <item>All year</item>
     </string-array>
+
+    <string name="delete">Delete</string>
+    <string name="more">More</string>
+    <string name="null_outfit">Null Outfit</string>
+    <string name="empty_selected_clothes">Empty Selected Clothes</string>
+
+    <string name="choose_clothes_to_add">Выберите одежду для добавления в образ</string>
 
 </resources>

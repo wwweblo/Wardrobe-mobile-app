@@ -25,7 +25,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="#FFFFFF" />
+            android:backgroundTint="@color/white" />
 
     </androidx.cardview.widget.CardView>
 
@@ -45,12 +45,12 @@
     <TextView
         android:id="@+id/list_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="91dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="88dp"
         android:text="@string/clothes"
+        android:textColor="@color/dark_gray"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,5 +75,27 @@
         android:src="@drawable/ic_search"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toStartOf="@+id/list_sort_button" />
+
+    <Button
+        android:id="@+id/list_cansel_button"
+        style="@style/gray_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="10dp"
+        android:text="cancel selection"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/list_more_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/light_gray"
+        android:src="@drawable/ic_outfits"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toStartOf="@+id/list_search_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

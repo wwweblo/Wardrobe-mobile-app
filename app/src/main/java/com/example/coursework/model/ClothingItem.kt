@@ -16,6 +16,7 @@ data class ClothingItem (
     val season: String,
     val description: String,
 
+    var isSelected: Boolean?,   //var чтобы можно было менять
     val dateUpdated: Long
 
 ): Parcelable

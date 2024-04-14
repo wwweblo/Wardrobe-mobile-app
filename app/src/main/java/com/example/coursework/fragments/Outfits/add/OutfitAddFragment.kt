@@ -1,4 +1,4 @@
-package com.example.coursework.fragments.Clothes.add
+package com.example.coursework.fragments.Outfits.add
 
 import android.app.Activity
 import android.app.NotificationChannel
@@ -12,19 +12,25 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.coursework.R
-import com.example.coursework.viewModel.ClothesViewModel
 import com.example.coursework.model.ClothingItem
+import com.example.coursework.model.Outfit
+import com.example.coursework.viewModel.ClothesViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,7 +38,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-class AddFragment : Fragment() {
+
+class OutfitAddFragment : Fragment() {
 
     private lateinit var mClothingItemView: ClothesViewModel
     private lateinit var imageButton: ImageButton
@@ -41,35 +48,40 @@ class AddFragment : Fragment() {
 
     private lateinit var titleInput: EditText
     private lateinit var seasonSpinner: Spinner
-    private lateinit var typeImput:EditText
+    private lateinit var styleImput: EditText
     private lateinit var descriptionInput: EditText
+
+    private lateinit var backButon: FloatingActionButton
+    private lateinit var addButton: Button
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add, container, false)
+        val view = inflater.inflate(R.layout.fragment_outfit_add, container, false)
         mClothingItemView = ViewModelProvider(this).get(ClothesViewModel::class.java)
 
         setupSeasonSpinner(view)
 
-        titleInput = view.findViewById(R.id.add_title_input)
-        seasonSpinner = view.findViewById(R.id.add_season_spinner)
-        typeImput = view.findViewById(R.id.add_type_input)
-        descriptionInput = view.findViewById(R.id.add_description_input)
+        titleInput = view.findViewById(R.id.outfit_add_title_input)
+        seasonSpinner = view.findViewById(R.id.outfit_add_season_spinner)
+        styleImput = view.findViewById(R.id.outfit_add_style_input)
+        descriptionInput = view.findViewById(R.id.outfit_add_description_input)
 
+        imageButton = view.findViewById(R.id.outfit_add_imageButton)
+        backButon = view.findViewById(R.id.outfit_add_back_button)
+        addButton = view.findViewById(R.id.outfit_add_add_button)
 
-        imageButton = view.findViewById(R.id.add_imageButton)
         imageButton.setOnClickListener {
             handleImageSelection()
         }
 
-        view.findViewById<FloatingActionButton>(R.id.add_back_button).setOnClickListener {
+        backButon.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        view.findViewById<Button>(R.id.add_add_button).setOnClickListener {
+        addButton.setOnClickListener {
             insertDataToDatabase(view)
         }
 
@@ -77,7 +89,7 @@ class AddFragment : Fragment() {
     }
 
     private fun setupSeasonSpinner(view: View) {
-        val seasonSpinner = view.findViewById<Spinner>(R.id.add_season_spinner)
+        val seasonSpinner = view.findViewById<Spinner>(R.id.outfit_add_season_spinner)
         val adapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.seasons,
@@ -184,56 +196,25 @@ class AddFragment : Fragment() {
     private fun insertDataToDatabase(view: View) {
         val title = titleInput.text.toString().takeIf { it.isNotBlank() } ?: "No title"
         val season = seasonSpinner.selectedItem.toString()
-        val type = typeImput.text.toString().takeIf { it.isNotBlank() } ?: "No type"
+        val style = styleImput.text.toString().takeIf { it.isNotBlank() } ?: "No type"
         val description = descriptionInput.text.toString().takeIf { it.isNotBlank() } ?: "No description"
 
-        val clothingItem = ClothingItem(
+        val outfit = Outfit(
             id = 0,
             image = currentImagePath,
             title = title,
-            type = type,
+            style = style,
             season = season,
             description = description,
-            dateUpdated = System.currentTimeMillis(),
-            isSelected = false
+            dateUpdated = System.currentTimeMillis()
         )
-        mClothingItemView.addClothingItem(clothingItem)
+        mClothingItemView.addOutfit(outfit)
         showToast(getString(R.string.on_added_message))
-        findNavController().navigate(R.id.action_addFragment_to_listFragment)
+        findNavController().navigate(R.id.action_outfitAddFragment_to_outfitListFragment)
     }
 
     private fun emptyStringCheck(vararg strings: String?): Boolean {
         return strings.all { !it.isNullOrBlank() }
     }
 
-    private fun showNotification(message: String) {
-        val notificationManager =
-            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "Your_Channel_ID"
-            val channel = NotificationChannel(
-                channelId,
-                "Your_Channel_Name",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
-
-            val notification = NotificationCompat.Builder(requireContext(), channelId)
-                .setContentTitle("Изображение сохранено")
-                .setContentText(message)
-                .setSmallIcon(R.drawable.ic_notification)
-                .build()
-
-            notificationManager.notify(1, notification)
-        } else {
-            val notification = NotificationCompat.Builder(requireContext())
-                .setContentTitle("Изображение сохранено")
-                .setContentText(message)
-                .setSmallIcon(R.drawable.ic_notification)
-                .build()
-
-            notificationManager.notify(1, notification)
-        }
-    }
 }

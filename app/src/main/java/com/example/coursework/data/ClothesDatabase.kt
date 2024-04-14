@@ -13,7 +13,7 @@ import com.example.coursework.model.Outfit
 
 @Database(
     entities = [ClothingItem::class, Outfit::class, ClothingItemOutfitCrossRef::class],
-    version = 3,
+    version = 5,
     exportSchema = false
 )
 

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_listFragment_to_outfitListFragment"
             app:destination="@id/outfitListFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_addToOutfitFragment"
+            app:destination="@id/addToOutfitFragment" />
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -64,5 +67,74 @@
         <action
             android:id="@+id/action_outfitListFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_outfitListFragment_to_outfitAddFragment"
+            app:destination="@id/outfitAddFragment" />
+        <action
+            android:id="@+id/action_outfitListFragment_to_outfitUpdateFragment"
+            app:destination="@id/outfitUpdateFragment" />
+        <action
+            android:id="@+id/action_outfitListFragment_to_moreAboutOutfitFragment"
+            app:destination="@id/moreAboutOutfitFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/outfitAddFragment"
+        android:name="com.example.coursework.fragments.Outfits.add.OutfitAddFragment"
+        android:label="OutfitAddFragment" >
+        <action
+            android:id="@+id/action_outfitAddFragment_to_outfitListFragment"
+            app:destination="@id/outfitListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/outfitUpdateFragment"
+        android:name="com.example.coursework.fragments.Outfits.update.OutfitUpdateFragment"
+        android:label="OutfitUpdateFragment" >
+        <action
+            android:id="@+id/action_outfitUpdateFragment_to_outfitListFragment"
+            app:destination="@id/outfitListFragment" />
+        <argument
+            android:name="currentOutfit"
+            app:argType="com.example.coursework.model.Outfit" />
+        <action
+            android:id="@+id/action_outfitUpdateFragment_to_moreAboutOutfitFragment"
+            app:destination="@id/moreAboutOutfitFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/moreAboutOutfitFragment"
+        android:name="com.example.coursework.fragments.Outfits.update.more.MoreAboutOutfitFragment"
+        android:label="MoreAboutOutfitFragment" >
+        <action
+            android:id="@+id/action_moreAboutOutfitFragment_to_outfitListFragment"
+            app:destination="@id/outfitListFragment" />
+        <action
+            android:id="@+id/action_moreAboutOutfitFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_moreAboutOutfitFragment_to_addToOutfitFragment"
+            app:destination="@id/addToOutfitFragment" />
+        <argument
+            android:name="currentOutfit"
+            app:argType="com.example.coursework.model.Outfit" />
+        <action
+            android:id="@+id/action_moreAboutOutfitFragment_to_outfitUpdateFragment"
+            app:destination="@id/outfitUpdateFragment" />
+        <action
+            android:id="@+id/action_moreAboutOutfitFragment_to_updateFragment"
+            app:destination="@id/updateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addToOutfitFragment"
+        android:name="com.example.coursework.fragments.Clothes.add_to_outfit.AddToOutfitFragment"
+        android:label="AddToOutfitFragment" >
+        <argument
+            android:name="selected_clothing_items"
+            app:argType="com.example.coursework.model.ClothingItem[]" />
+        <action
+            android:id="@+id/action_addToOutfitFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_addToOutfitFragment_to_moreAboutOutfitFragment"
+            app:destination="@id/moreAboutOutfitFragment" >
+        </action>
     </fragment>
 </navigation>

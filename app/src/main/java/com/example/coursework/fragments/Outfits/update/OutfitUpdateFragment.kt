@@ -1,4 +1,4 @@
-package com.example.coursework.fragments.Clothes.update
+package com.example.coursework.fragments.Outfits.update
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -9,6 +9,8 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.view.Gravity
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,38 +18,38 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.coursework.R
-import com.example.coursework.model.ClothingItem
+import com.example.coursework.model.Outfit
 import com.example.coursework.viewModel.ClothesViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
-class UpdateFragment : Fragment() {
+class OutfitUpdateFragment : Fragment() {
 
     private lateinit var view: View
     private lateinit var imageButton: ImageButton
     private lateinit var titleInput: EditText
     private lateinit var seasonSpinner: Spinner
-    private lateinit var typeImput:EditText
+    private lateinit var styleInput: EditText
     private lateinit var descriptionInput: EditText
     private lateinit var updateButton: Button
-    private lateinit var deleteButton: FloatingActionButton
-    private lateinit var backButton:FloatingActionButton
+    private lateinit var menuButton: FloatingActionButton
+    private lateinit var backButton: FloatingActionButton
 
-    private val args by navArgs<UpdateFragmentArgs>()
-    private lateinit var mClothingItemView: ClothesViewModel
+    private val args by navArgs<OutfitUpdateFragmentArgs>()
+    private lateinit var mClothesView: ClothesViewModel
     private val IMAGE_DIRECTORY = "ClothingImages"
     private var currentImagePath: String? = null
 
@@ -56,26 +58,26 @@ class UpdateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_update, container, false)
+        view = inflater.inflate(R.layout.fragment_outfit_update, container, false)
 
-        mClothingItemView = ViewModelProvider(this).get(ClothesViewModel::class.java)
+        mClothesView = ViewModelProvider(this).get(ClothesViewModel::class.java)
 
 
         //Инициализация компонентов
-        imageButton = view.findViewById(R.id.update_imageButton)
-        titleInput = view.findViewById(R.id.update_title_input)
-        seasonSpinner = view.findViewById(R.id.update_season_spinner)
-        typeImput = view.findViewById(R.id.update_type_input)
-        descriptionInput = view.findViewById(R.id.update_description_input)
-        updateButton = view.findViewById(R.id.update_update_button)
-        deleteButton = view.findViewById(R.id.update_delete_button)
-        backButton = view.findViewById(R.id.update_back_button)
+        imageButton = view.findViewById(R.id.outfit_update_imageButton)
+        titleInput = view.findViewById(R.id.outfit_update_title_input)
+        seasonSpinner = view.findViewById(R.id.outfit_update_season_spinner)
+        styleInput = view.findViewById(R.id.outfit_update_style_input)
+        descriptionInput = view.findViewById(R.id.outfit_update_description_input)
+        updateButton = view.findViewById(R.id.outfit_update_update_button)
+        menuButton = view.findViewById(R.id.outfit_update_delete_button)
+        backButton = view.findViewById(R.id.outfit_update_back_button)
 
 
         // Установка значений из базы данных
-        val imagePath = args.currentClothingItem.image
+        val imagePath = args.currentOutfit.image
         setImageToImageButton(imagePath)
-        titleInput.setText(args.currentClothingItem.title)
+        titleInput.setText(args.currentOutfit.title)
 
 
         // Задаем значение в Spinner
@@ -91,7 +93,7 @@ class UpdateFragment : Fragment() {
         val seasonsArray = resources.getStringArray(R.array.seasons)
 
         // Устанавливаем значение в Spinner, если оно присутствует в массиве
-        val currentSeason = args.currentClothingItem.season
+        val currentSeason = args.currentOutfit.season
         if (seasonsArray.contains(currentSeason)) {
             val position = spinnerAdapter.getPosition(currentSeason)
             seasonSpinner.setSelection(position)
@@ -100,8 +102,8 @@ class UpdateFragment : Fragment() {
             showToast(getString(R.string.season_spinner_error))
         }
 
-        typeImput.setText(args.currentClothingItem.type)
-        descriptionInput.setText(args.currentClothingItem.description)
+        styleInput.setText(args.currentOutfit.style)
+        descriptionInput.setText(args.currentOutfit.description)
 
 
         imageButton.setOnClickListener{
@@ -115,8 +117,9 @@ class UpdateFragment : Fragment() {
             updateItem()
         }
 
-        deleteButton.setOnClickListener{
-            deleteItem()
+        menuButton.setOnClickListener{
+            showMenu()
+            //deleteItem()
         }
 
         backButton.setOnClickListener {
@@ -126,36 +129,62 @@ class UpdateFragment : Fragment() {
         return view
     }
 
+    private fun showMenu() {
+        val popupMenu = PopupMenu(requireContext(), menuButton, Gravity.END)
+        popupMenu.inflate(R.menu.update_outfit_menu)
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.more -> {
+                    //showToast("More")
+                    MoreAboutOutfit()
+                    true
+                }
+                R.id.delete -> {
+                    showToast(getString(R.string.delete))
+                    DeleteItem()
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
+    }
+
+    private fun MoreAboutOutfit() {
+        val action = OutfitUpdateFragmentDirections.actionOutfitUpdateFragmentToMoreAboutOutfitFragment(args.currentOutfit)
+        findNavController().navigate(action)
+    }
+
 
     // Метод для отображения диалога подтверждения удаления элемента
-    private fun deleteItem() {
+    private fun DeleteItem() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Yes") { _, _ ->
             finallyDeleteItem()
         }
         builder.setNegativeButton("No") { _, _ -> }
-        builder.setTitle("Delete ${args.currentClothingItem.title}?")
-        builder.setMessage("Are you sure you want to delete ${args.currentClothingItem.title}?")
+        builder.setTitle("Delete ${args.currentOutfit.title}?")
+        builder.setMessage("Are you sure you want to delete ${args.currentOutfit.title}?")
         builder.create().show()
     }
 
     // Метод для выполнения удаления элемента после подтверждения
     private fun finallyDeleteItem() {
-        val currentImagePath = args.currentClothingItem.image
+        val currentImagePath = args.currentOutfit.image
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val isImagePathUsed = mClothingItemView.isClothesImagePathUsed(currentImagePath)
+            val isImagePathUsed = mClothesView.isClothesImagePathUsed(currentImagePath)
 
             if (!isImagePathUsed) {
                 deleteImage(currentImagePath)
             }
 
-            mClothingItemView.deleteClothingItem(args.currentClothingItem)
+            mClothesView.deleteOutfit(args.currentOutfit)
         }
 
         showToast(getString(R.string.on_deleted_message))
 
-        findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+        findNavController().navigate(R.id.action_outfitUpdateFragment_to_outfitListFragment)
     }
 
     // Метод для отображения сообщения в Toast
@@ -237,7 +266,7 @@ class UpdateFragment : Fragment() {
     // Метод для замены текущего изображения
     private fun replaceCurrentImage(imagePath: String?) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val isImagePathUsed = mClothingItemView.isClothesImagePathUsed(currentImagePath)
+            val isImagePathUsed = mClothesView.isOutfitImagePathUsed(currentImagePath)
 
             if (!isImagePathUsed) {
                 deleteImage(currentImagePath)
@@ -265,24 +294,23 @@ class UpdateFragment : Fragment() {
     private fun updateItem() {
         val title = titleInput.text.toString().takeIf { it.isNotBlank() } ?: "No title"
         val season = seasonSpinner.selectedItem.toString()
-        val type = typeImput.text.toString().takeIf { it.isNotBlank() } ?: "No type"
+        val style = styleInput.text.toString().takeIf { it.isNotBlank() } ?: "No style"
         val description = descriptionInput.text.toString().takeIf { it.isNotBlank() } ?: "No description"
 
-        val updatedClothingItem = ClothingItem(
-            id = args.currentClothingItem.id,
+        val updatedOutfit = Outfit(
+            id = args.currentOutfit.id,
             image = currentImagePath,
             title = title,
-            type = type,
+            style = style,
             season = season,
             description = description,
-            dateUpdated = System.currentTimeMillis(),
-            isSelected = false
+            dateUpdated = System.currentTimeMillis()
         )
 
-        mClothingItemView.updateClothingItem(updatedClothingItem)
+        mClothesView.updateOutfit(updatedOutfit)
         showToast(getString(R.string.on_updated_message))
 
-        findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+        findNavController().navigate(R.id.action_outfitUpdateFragment_to_outfitListFragment)
     }
 
 }
