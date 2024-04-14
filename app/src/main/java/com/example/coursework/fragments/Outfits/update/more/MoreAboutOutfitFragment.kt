@@ -25,6 +25,7 @@ class MoreAboutOutfitFragment : Fragment() {
     private val args: MoreAboutOutfitFragmentArgs by navArgs()
     private lateinit var adapter: MoreAboutOutfitAdapter
     private lateinit var title: TextView
+    private lateinit var currentOutfit: Outfit
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,15 +37,20 @@ class MoreAboutOutfitFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // ViewModel
+        mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
+        currentOutfit = args.currentOutfit
+
         // RecyclerView
-        adapter = MoreAboutOutfitAdapter(requireActivity())
+        adapter = MoreAboutOutfitAdapter(requireActivity(), currentOutfit)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // ViewModel
-        mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
-        val currentOutfit = args.currentOutfit
+        val backButton = view.findViewById<FloatingActionButton>(R.id.more_back_button)
+        backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         title = view.findViewById(R.id.more_title)
 
@@ -63,5 +69,8 @@ class MoreAboutOutfitFragment : Fragment() {
         }
     }
 
+    fun getOutfit(): Outfit{
+        return currentOutfit
+    }
 
 }

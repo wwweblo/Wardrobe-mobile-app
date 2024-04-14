@@ -1,11 +1,14 @@
 package com.example.coursework.fragments.Outfits.update.more
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -13,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.fragments.Clothes.list.ListFragmentDirections
 import com.example.coursework.model.ClothingItem
+import com.example.coursework.model.ClothingItemOutfitCrossRef
+import com.example.coursework.model.Outfit
 import com.example.coursework.viewModel.ClothesViewModel
 
-class MoreAboutOutfitAdapter(private val activity: FragmentActivity) : RecyclerView.Adapter<MoreAboutOutfitAdapter.MyViewHolder>() {
+class MoreAboutOutfitAdapter(private val activity: FragmentActivity, private val currentOutfit: Outfit) : RecyclerView.Adapter<MoreAboutOutfitAdapter.MyViewHolder>() {
+
 
     private var mClothesViewModel: ClothesViewModel = ViewModelProvider(activity).get(ClothesViewModel::class.java)
     private val clothingItems = mutableListOf<ClothingItem>()
@@ -31,7 +37,7 @@ class MoreAboutOutfitAdapter(private val activity: FragmentActivity) : RecyclerV
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.custom_row_list_without_checkbox, parent, false)
+                .inflate(R.layout.custom_row_list_with_delete, parent, false)
         )
     }
 
@@ -56,6 +62,18 @@ class MoreAboutOutfitAdapter(private val activity: FragmentActivity) : RecyclerV
             // Description
             val descriptionTextView = findViewById<TextView>(R.id.list_adapter_description)
             textViewLimit(descriptionTextView, currentItem.description, DESCRIPTION_LENGTH_LIMIT)
+
+            //Delete
+            val deleteButton = findViewById<ImageButton>(R.id.list_deleta_button)
+            deleteButton.setOnClickListener {
+                val connection = ClothingItemOutfitCrossRef (
+                    clothingItemId = currentItem.id,
+                    outfitId = currentOutfit.id
+                )
+                mClothesViewModel.deleteClothingItemOutfitCrossRef(connection)
+
+
+            }
 
             // Передача элемента на окно обновления
             findViewById<ConstraintLayout>(R.id.rowLayout).setOnClickListener {
