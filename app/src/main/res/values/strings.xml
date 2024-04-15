@@ -34,7 +34,18 @@
     <string name="more">More</string>
     <string name="null_outfit">Null Outfit</string>
     <string name="empty_selected_clothes">Empty Selected Clothes</string>
+    <string name="Are_you_sure_you_want_to_delete">Are you sure you want to delete</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="style">Style</string>
+    <string name="add">Add</string>
+    <string name="update">Update</string>
+    <string name="title">Title</string>
+    <string name="description">Desctiption</string>
+    <string name="type">Type</string>
 
-    <string name="choose_clothes_to_add">Выберите одежду для добавления в образ</string>
+
+
+    <string name="choose_clothes_to_add">Choose clothes to add them to outfit</string>
 
 </resources>
