@@ -79,6 +79,9 @@
         <action
             android:id="@+id/action_outfitListFragment_to_moreAboutOutfitFragment"
             app:destination="@id/moreAboutOutfitFragment" />
+        <action
+            android:id="@+id/action_outfitListFragment_to_outfitSearchFragment"
+            app:destination="@id/outfitSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/outfitAddFragment"
@@ -101,6 +104,9 @@
         <action
             android:id="@+id/action_outfitUpdateFragment_to_moreAboutOutfitFragment"
             app:destination="@id/moreAboutOutfitFragment" />
+        <action
+            android:id="@+id/action_outfitUpdateFragment_to_outfitSearchFragment"
+            app:destination="@id/outfitSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/moreAboutOutfitFragment"
@@ -142,5 +148,16 @@
         <action
             android:id="@+id/action_addToOutfitFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/outfitSearchFragment"
+        android:name="com.example.coursework.fragments.Outfits.search.OutfitSearchFragment"
+        android:label="OutfitSearchFragment" >
+        <action
+            android:id="@+id/action_outfitSearchFragment_to_outfitListFragment"
+            app:destination="@id/outfitListFragment" />
+        <action
+            android:id="@+id/action_outfitSearchFragment_to_outfitUpdateFragment"
+            app:destination="@id/outfitUpdateFragment" />
     </fragment>
 </navigation>
