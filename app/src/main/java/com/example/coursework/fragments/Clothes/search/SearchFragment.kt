@@ -4,21 +4,22 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
 import com.example.coursework.viewModel.ClothesViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 
 @Suppress("DEPRECATION")
 class SearchFragment : Fragment() {
@@ -32,14 +33,14 @@ class SearchFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
+        //ViewModel
+        mClothesViewModel = ViewModelProvider(this).get(ClothesViewModel::class.java)
+
         //RecyclerView
-        adapter = SearchListAdapter()
+        adapter = SearchListAdapter(mClothesViewModel)
         val recyclerView = view.findViewById<RecyclerView>(R.id.search_recyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        //ViewModel
-        mClothesViewModel = ViewModelProvider(this).get(ClothesViewModel::class.java)
 
         // Кнопка назад
         val backButton = view.findViewById<FloatingActionButton>(R.id.search_back_button)
@@ -52,6 +53,33 @@ class SearchFragment : Fragment() {
         val searchInput = view.findViewById<EditText>(R.id.search_editText)
         searchInput.requestFocus()
 
+        val addToOutfitButton = view.findViewById<ImageButton>(R.id.search_add_to_outfit)
+        //Добавление в образ
+        addToOutfitButton.setOnClickListener{
+            // Получаем список всех элементов из ViewModel
+            val allClothingItems = mClothesViewModel.readAllClothes.value?: emptyList()
+
+            // Отфильтровываем список, оставляя только выбранные элементы
+            val selectedClothingItems = allClothingItems.filter { it.isSelected?: false }
+
+            // Если массив выбранных элементов не пустой, формируем и передаем его
+            if (selectedClothingItems.isNotEmpty()) {
+                // Формируем массив из выбранных элементов
+                val selectedItemsArray = selectedClothingItems.toTypedArray()
+
+                // Создаем Bundle для передачи данных в следующий фрагмент
+                val bundle = Bundle().apply {
+                    putParcelableArray("selectedItems", selectedItemsArray)
+                }
+
+
+                // Навигация на addToOutfitFragment с передачей Bundle
+                findNavController().navigate(R.id.action_searchFragment_to_addToOutfitFragment, bundle)
+            } else {
+                // Если массив пуст, отображаем сообщение пользователю
+                showToast(getString(R.string.choose_clothes_to_add))
+            }
+        }
 
         // Обновление списка при изменении текста в EditText
         searchInput.addTextChangedListener(object : TextWatcher {
@@ -93,4 +121,3 @@ class SearchFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }
-
