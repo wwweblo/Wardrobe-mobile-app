@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Гардероб</string>
+    <string name="clothes">Одежда</string>
+    <string name="outfits">Образы</string>
+    <string name="empty_list_fragment_title">Нажмите на кнопку "Плюс" </string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="on_added_message">Добавлено👍</string>
+    <string name="on_updated_message">Обновлено👍</string>
+    <string name="on_deleted_message">Удалено😰</string>
+    <string name="empty_title_error">Название и тип не могут быть пустыми</string>
+
+    <string name="no_image_error">Вы не добавили изображение</string>
+    <string name="missed_image_error">Нет изображения по текущему пути</string>
+
+    <string name="cansel_selection">Отмена выбора</string>
+    <string name="sort_type_title">Отсортированно по названию</string>
+    <string name="sort_type_last_update">Отсортированно по дате обновления</string>
+
+    <string name="season_spinner_error">Неизвестный сезон🤔</string>
+    <string-array name="seasons">
+        <item>Весна</item>
+        <item>Весна-лето</item>
+        <item>Лето</item>
+        <item>Лето-осень</item>
+        <item>Осень</item>
+        <item>Осевь-весна</item>
+        <item>Зима</item>
+        <item>Зима-весна</item>
+        <item>Весь год</item>
+    </string-array>
+
+    <string name="delete">Удалить</string>
+    <string name="more">Подробнее</string>
+    <string name="null_outfit">Null Outfit</string>
+    <string name="empty_selected_clothes">Empty Selected Clothes</string>
+    <string name="Are_you_sure_you_want_to_delete">Вы уверенны что хотите удалить</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="add">Добавить</string>
+
+    <string name="style">Стиль</string>
+    <string name="update">Обновить</string>
+    <string name="title">Название</string>
+    <string name="description">Описание</string>
+    <string name="type">Тип</string>
+
+
+    <string name="choose_clothes_to_add">Выберите одежду чтобы добавить ее в образ</string>
+
+</resources>

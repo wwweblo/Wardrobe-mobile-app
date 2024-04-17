@@ -153,6 +153,10 @@ class OutfitAddFragment : Fragment() {
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         return inputStream?.use { stream ->
             val selectedImageBitmap = BitmapFactory.decodeStream(stream)
+
+            // Масштабирование изображения до 215x215 пикселей
+            val scaledBitmap = Bitmap.createScaledBitmap(selectedImageBitmap, 575, 575, false)
+
             val storageDir = File(
                 requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
                 "Wardrobe app"
@@ -162,9 +166,8 @@ class OutfitAddFragment : Fragment() {
             }
             val imageFile = File.createTempFile("IMG_", ".png", storageDir)
             val outputStream = FileOutputStream(imageFile)
-            selectedImageBitmap.compress(Bitmap.CompressFormat.PNG, 80, outputStream)
+            scaledBitmap.compress(Bitmap.CompressFormat.PNG, 80, outputStream)
             outputStream.close()
-//            scanFile(imageFile) // Сканируем новый файл
             imageFile.absolutePath
         } ?: throw IOException("Input stream is null")
     }

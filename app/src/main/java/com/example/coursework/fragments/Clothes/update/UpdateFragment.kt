@@ -130,12 +130,12 @@ class UpdateFragment : Fragment() {
     // Метод для отображения диалога подтверждения удаления элемента
     private fun deleteItem() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("Yes") { _, _ ->
+        builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
             finallyDeleteItem()
         }
-        builder.setNegativeButton("No") { _, _ -> }
-        builder.setTitle("Delete ${args.currentClothingItem.title}?")
-        builder.setMessage("Are you sure you want to delete ${args.currentClothingItem.title}?")
+        builder.setNegativeButton(getString(R.string.no)) { _, _ -> }
+        builder.setTitle("${getString(R.string.delete)} ${args.currentClothingItem.title}?")
+        builder.setMessage("${getString(R.string.Are_you_sure_you_want_to_delete)} ${args.currentClothingItem.title}?")
         builder.create().show()
     }
 

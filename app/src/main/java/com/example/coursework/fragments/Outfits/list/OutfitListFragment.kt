@@ -65,6 +65,10 @@ class OutfitListFragment : Fragment() {
         addButton.setOnClickListener {
             findNavController().navigate(R.id.action_outfitListFragment_to_outfitAddFragment)
         }
+        val searchButton = view.findViewById<ImageButton>(R.id.outfit_list_search_button)
+        searchButton.setOnClickListener {
+            findNavController().navigate(R.id.action_outfitListFragment_to_outfitSearchFragment)
+        }
     }
 
     private fun updateAdapter(){

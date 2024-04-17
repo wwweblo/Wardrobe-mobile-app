@@ -1,9 +1,10 @@
-package com.example.coursework.fragments.Clothes.search
+package com.example.coursework.fragments.Outfits.search
 
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,21 +12,22 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coursework.R
+import com.example.coursework.fragments.Clothes.search.SearchListAdapter
 import com.example.coursework.viewModel.ClothesViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
+
 @Suppress("DEPRECATION")
-class SearchFragment : Fragment() {
+class OutfitSearchFragment : Fragment() {
 
     private lateinit var mClothesViewModel: ClothesViewModel
-    private lateinit var adapter: SearchListAdapter
+    private lateinit var adapter: OutfitSearchAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +39,7 @@ class SearchFragment : Fragment() {
         mClothesViewModel = ViewModelProvider(this).get(ClothesViewModel::class.java)
 
         //RecyclerView
-        adapter = SearchListAdapter(mClothesViewModel)
+        adapter = OutfitSearchAdapter(mClothesViewModel)
         val recyclerView = view.findViewById<RecyclerView>(R.id.search_recyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -52,34 +54,6 @@ class SearchFragment : Fragment() {
         // Установка фокуса на EditText для начала ввода поискового запроса
         val searchInput = view.findViewById<EditText>(R.id.search_editText)
         searchInput.requestFocus()
-
-        val addToOutfitButton = view.findViewById<ImageButton>(R.id.search_add_to_outfit)
-        //Добавление в образ
-        addToOutfitButton.setOnClickListener{
-            // Получаем список всех элементов из ViewModel
-            val allClothingItems = mClothesViewModel.readAllClothes.value?: emptyList()
-
-            // Отфильтровываем список, оставляя только выбранные элементы
-            val selectedClothingItems = allClothingItems.filter { it.isSelected?: false }
-
-            // Если массив выбранных элементов не пустой, формируем и передаем его
-            if (selectedClothingItems.isNotEmpty()) {
-                // Формируем массив из выбранных элементов
-                val selectedItemsArray = selectedClothingItems.toTypedArray()
-
-                // Создаем Bundle для передачи данных в следующий фрагмент
-                val bundle = Bundle().apply {
-                    putParcelableArray("selectedItems", selectedItemsArray)
-                }
-
-
-                // Навигация на addToOutfitFragment с передачей Bundle
-                findNavController().navigate(R.id.action_searchFragment_to_addToOutfitFragment, bundle)
-            } else {
-                // Если массив пуст, отображаем сообщение пользователю
-                showToast(getString(R.string.choose_clothes_to_add))
-            }
-        }
 
         // Обновление списка при изменении текста в EditText
         searchInput.addTextChangedListener(object : TextWatcher {
@@ -101,12 +75,12 @@ class SearchFragment : Fragment() {
     }
 
     private fun updateAdapter(searchText: String) {
-        mClothesViewModel.readAllClothes.observe(viewLifecycleOwner, Observer { clothingItems ->
+        mClothesViewModel.readAllOutfits.observe(viewLifecycleOwner, Observer { clothingItems ->
             val filteredList = clothingItems.filter { item ->
                 item.title.contains(searchText, ignoreCase = true) ||
                         item.season.contains(searchText, ignoreCase = true) ||
-                        item.description.contains(searchText, ignoreCase = true) ||
-                        item.type.contains(searchText, ignoreCase = true)
+                        item.description.contains(searchText, ignoreCase = true) //||
+                //item.style.contains(searchText, ignoreCase = true)
             }
             adapter.setData(filteredList)
         })

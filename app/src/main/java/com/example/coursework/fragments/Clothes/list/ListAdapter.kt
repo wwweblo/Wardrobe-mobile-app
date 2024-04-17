@@ -20,8 +20,8 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
 
 
     companion object {
-        private const val TITLE_LENGTH_LIMIT = 35
-        private const val DESCRIPTION_LENGTH_LIMIT = 50
+        private const val TITLE_LENGTH_LIMIT = 25
+        private const val DESCRIPTION_LENGTH_LIMIT = 30
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
