@@ -14,8 +14,8 @@ class OutfitListAdapter : RecyclerView.Adapter<OutfitListAdapter.MyViewHolder>()
 
     private var outfitList = emptyList<Outfit>()
 
-    private val titleLengthLimit = 35
-    private val descriptionLengthLimit = 50
+    private val titleLengthLimit = 25
+    private val descriptionLengthLimit = 30
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 
@@ -59,12 +59,6 @@ class OutfitListAdapter : RecyclerView.Adapter<OutfitListAdapter.MyViewHolder>()
             }
         }
     }
-
-    fun setData(outfits: List<Outfit>) {
-        outfitList = outfits
-        notifyDataSetChanged()
-    }
-
     private fun textViewLimit(tv: TextView, text: String, limit: Int) {
         tv.text = if (text.length > limit) {
             text.substring(0, limit) + "..."
@@ -72,4 +66,10 @@ class OutfitListAdapter : RecyclerView.Adapter<OutfitListAdapter.MyViewHolder>()
             text
         }
     }
+    fun setData(outfits: List<Outfit>) {
+        outfitList = outfits
+        notifyDataSetChanged()
+    }
+
+
 }
