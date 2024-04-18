@@ -34,8 +34,6 @@ class AddToOutfitFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         // ViewModel
         mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
 

@@ -44,6 +44,7 @@
     <string name="title">Название</string>
     <string name="description">Описание</string>
     <string name="type">Тип</string>
+    <string name="items">элементов</string>
 
 
     <string name="choose_clothes_to_add">Выберите одежду чтобы добавить ее в образ</string>

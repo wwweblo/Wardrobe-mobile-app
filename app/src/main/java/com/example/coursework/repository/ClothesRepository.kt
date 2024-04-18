@@ -49,12 +49,16 @@ class ClothesRepository(private val dao: ClothesDao) {
         return  dao.isAnyItemSelected()
     }
 
-    // Метод для получения списка ClothingItem, связанных с Outfit
-    fun getClothingItemsForOutfit(outfitId: Int): LiveData<List<ClothingItem>> {
-        return dao.getClothingItemsForOutfit(outfitId)
-    }
-
     fun isImagePathUsed(imagePath: String?): Boolean {
         return dao.isImagePathUsed(imagePath)
+    }
+
+    suspend fun getSelectedClothingItemCount(): Int {
+        return dao.getSelectedClothingItemCount()
+    }
+
+    // Метод в репозитории для вызова соответствующего метода DAO
+    suspend fun deleteSelectedClothingItems() {
+        dao.deleteSelectedClothingItems()
     }
 }

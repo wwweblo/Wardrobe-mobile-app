@@ -46,7 +46,10 @@ interface ClothesDao {
     @Query("SELECT COUNT(*) FROM ClothingItem WHERE image = :imagePath")
     fun isImagePathUsed(imagePath: String?): Boolean
 
-    @Transaction    //Transaction нужен для того, чтобы запрос выполнялся в 1 транзакции. Полезно для больших запросов
-    @Query("SELECT * FROM ClothingItem INNER JOIN ClothingItemOutfitCrossRef ON ClothingItem.id = ClothingItemOutfitCrossRef.clothingItemId WHERE ClothingItemOutfitCrossRef.outfitId = :outfitId")
-    fun getClothingItemsForOutfit(outfitId: Int): LiveData<List<ClothingItem>>
+    @Query("SELECT COUNT(*) FROM ClothingItem WHERE isSelected = 1")
+    suspend fun getSelectedClothingItemCount(): Int
+
+    // Метод для удаления всех ClothingItem с isSelected = true
+    @Query("DELETE FROM Clothingitem WHERE isSelected = 1")
+    suspend fun deleteSelectedClothingItems()
 }

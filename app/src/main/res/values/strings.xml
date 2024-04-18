@@ -43,6 +43,7 @@
     <string name="title">Title</string>
     <string name="description">Desctiption</string>
     <string name="type">Type</string>
+    <string name="items">items</string>
 
 
     <string name="choose_clothes_to_add">Choose clothes to add them to outfit</string>
