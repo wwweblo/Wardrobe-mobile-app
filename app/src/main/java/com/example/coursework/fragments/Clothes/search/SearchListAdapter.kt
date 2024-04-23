@@ -16,12 +16,25 @@ import com.example.coursework.viewModel.ClothesViewModel
 class SearchListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapter<SearchListAdapter.MyViewHolder>() {
 
     private var clothingItemList = emptyList<ClothingItem>()
+    private val selectedItems = mutableListOf<ClothingItem>()
 
     private val titleLengthLimit = 35
     private val descriptionLengthLimit = 50
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val checkboxSelected: CheckBox = itemView.findViewById(R.id.custom_row_select)
+
+        init {
+            checkboxSelected.setOnCheckedChangeListener { _, isChecked ->
+                val currentItem = clothingItemList[adapterPosition]
+                if (isChecked) {
+                    selectedItems.add(currentItem)
+                } else {
+                    selectedItems.remove(currentItem)
+                }
+                Log.d("ListAdapter", "Selected items: $selectedItems")
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -56,23 +69,26 @@ class SearchListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.
                 findNavController().navigate(action)
             }
 
-            // Установка значения CheckBox
-            holder.checkboxSelected.isChecked = currentItem.isSelected ?: false
-
-            // Обработчик нажатия на CheckBox
-            holder.checkboxSelected.setOnCheckedChangeListener { _, isChecked ->
-                // Обновление значения в базе данных
-                currentItem.isSelected = isChecked
-                // Вызов метода toggleClothingItemSelection из ViewModel
-                viewModel.toggleClothingItemSelection(currentItem.id)
-                Log.d("ListAdapter", "currentItem = (title->${currentItem.title}, isSelected->${currentItem.isSelected})")
-            }
+//            // Установка значения CheckBox
+//            holder.checkboxSelected.isChecked = currentItem.isSelected ?: false
+//
+//            // Обработчик нажатия на CheckBox
+//            holder.checkboxSelected.setOnCheckedChangeListener { _, isChecked ->
+//                // Обновление значения в базе данных
+//                currentItem.isSelected = isChecked
+//                // Вызов метода toggleClothingItemSelection из ViewModel
+//                viewModel.toggleClothingItemSelection(currentItem.id)
+//                Log.d("ListAdapter", "currentItem = (title->${currentItem.title}, isSelected->${currentItem.isSelected})")
+//            }
         }
     }
 
     fun setData(clothingItem: List<ClothingItem>) {
         clothingItemList = clothingItem
         notifyDataSetChanged()
+    }
+    fun getSelectedItems(): List<ClothingItem> {
+        return selectedItems.toList()
     }
 
     private fun textViewLimit(tv: TextView, text: String, limit: Int) {

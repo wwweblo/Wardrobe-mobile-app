@@ -98,8 +98,11 @@ class ListFragment : Fragment() {
                 finallyDeleteItems()
             }
             builder.setNegativeButton(getString(R.string.no)) { _, _ -> }
-            builder.setTitle("${getString(R.string.delete)} ${mClothesViewModel.getSelectedClothingItemCount()}?")
-            builder.setMessage("${getString(R.string.Are_you_sure_you_want_to_delete)} ${mClothesViewModel.getSelectedClothingItemCount()} ${getString(R.string.items)}?")
+//            builder.setTitle("${getString(R.string.delete)} ${mClothesViewModel.getSelectedClothingItemCount()}?")
+//            builder.setMessage("${getString(R.string.Are_you_sure_you_want_to_delete)} ${mClothesViewModel.getSelectedClothingItemCount()} ${getString(R.string.items)}?")
+            val selectedCount = adapter.getSelectedItems().size
+            builder.setTitle("${getString(R.string.delete)} $selectedCount?")
+            builder.setMessage("${getString(R.string.Are_you_sure_you_want_to_delete)} $selectedCount ${getString(R.string.items)}?")
             builder.create().show()
         }
 
@@ -109,7 +112,8 @@ class ListFragment : Fragment() {
             val allClothingItems = mClothesViewModel.readAllClothes.value?: emptyList()
 
             // Отфильтровываем список, оставляя только выбранные элементы
-            val selectedClothingItems = allClothingItems.filter { it.isSelected?: false }
+            //val selectedClothingItems = allClothingItems.filter { it.isSelected?: false }
+            val selectedClothingItems = adapter.getSelectedItems()
 
             // Если массив выбранных элементов не пустой, формируем и передаем его
             if (selectedClothingItems.isNotEmpty()) {
@@ -135,7 +139,12 @@ class ListFragment : Fragment() {
     }
 
     private fun finallyDeleteItems(){
-        mClothesViewModel.deleteSelectedClothingItems()
+        val selected = adapter.getSelectedItems()
+        selected.forEach { item ->
+            mClothesViewModel.deleteClothingItem(item)
+        }
+
+        //mClothesViewModel.deleteSelectedClothingItems()
     }
 
     private fun updateAdapter(){

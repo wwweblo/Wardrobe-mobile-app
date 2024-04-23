@@ -60,7 +60,8 @@ class SearchFragment : Fragment() {
             val allClothingItems = mClothesViewModel.readAllClothes.value?: emptyList()
 
             // Отфильтровываем список, оставляя только выбранные элементы
-            val selectedClothingItems = allClothingItems.filter { it.isSelected?: false }
+//            val selectedClothingItems = allClothingItems.filter { it.isSelected?: false }
+            val selectedClothingItems = adapter.getSelectedItems()
 
             // Если массив выбранных элементов не пустой, формируем и передаем его
             if (selectedClothingItems.isNotEmpty()) {

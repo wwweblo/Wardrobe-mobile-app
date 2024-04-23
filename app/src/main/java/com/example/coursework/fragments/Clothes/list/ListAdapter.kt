@@ -17,7 +17,7 @@ import com.example.coursework.viewModel.ClothesViewModel
 class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     private val clothingItems = mutableListOf<ClothingItem>()
-
+    private val selectedItems = mutableListOf<ClothingItem>()
 
     companion object {
         private const val TITLE_LENGTH_LIMIT = 25
@@ -26,6 +26,18 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val checkboxSelected: CheckBox = itemView.findViewById(R.id.custom_row_select)
+
+        init {
+            checkboxSelected.setOnCheckedChangeListener { _, isChecked ->
+                val currentItem = clothingItems[adapterPosition]
+                if (isChecked) {
+                    selectedItems.add(currentItem)
+                } else {
+                    selectedItems.remove(currentItem)
+                }
+                Log.d("ListAdapter", "Selected items: $selectedItems")
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -63,17 +75,7 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
             }
 
             // Установка значения CheckBox
-            holder.checkboxSelected.isChecked = currentItem.isSelected ?: false
-
-            // Обработчик нажатия на CheckBox
-            holder.checkboxSelected.setOnCheckedChangeListener { _, isChecked ->
-                // Обновление значения в базе данных
-                currentItem.isSelected = isChecked
-                // Вызов метода toggleClothingItemSelection из ViewModel
-                viewModel.toggleClothingItemSelection(currentItem.id)
-                Log.d("ListAdapter", "currentItem = (title->${currentItem.title}, isSelected->${currentItem.isSelected})")
-
-            }
+            //holder.checkboxSelected.isChecked = currentItem.isSelected ?: false
         }
     }
 
@@ -90,8 +92,14 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
             tv.text = text
         }
     }
+
+    fun getSelectedItems(): List<ClothingItem> {
+        return selectedItems.toList()
+    }
+
     fun resetSelection() {
-        clothingItems.forEach { it.isSelected = false }
+        //clothingItems.forEach { it.isSelected = false }
+        selectedItems.clear()
         notifyDataSetChanged()
     }
 }
