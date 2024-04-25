@@ -15,6 +15,7 @@ import com.example.coursework.repository.OutfitRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 /*
 *   Цель ViewModel - Работа с пользовательским интерфейсом
@@ -101,30 +102,32 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun toggleClothingItemSelection(id: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            clothesRepository.toggleClothingItemSelection(id)
-        }
-    }
-    suspend fun isAnyItemSelected(): Boolean {
-        return clothesRepository.isAnyItemSelected()
-    }
+//    fun toggleClothingItemSelection(id: Int) {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            clothesRepository.toggleClothingItemSelection(id)
+//        }
+//   }
+//    suspend fun isAnyItemSelected(): Boolean {
+//        return clothesRepository.isAnyItemSelected()
+//    }
+//
+//    fun getSelectedClothingItemCount(): Int {
+//        return runBlocking(Dispatchers.IO) {
+//            clothesRepository.getSelectedClothingItemCount()
+//        }
+//    }
 
-    fun getConnectedClothingItems(outfitId: Int): LiveData<List<ClothingItem>> {
-        var clothingItems: LiveData<List<ClothingItem>> = MutableLiveData<List<ClothingItem>>()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            clothingItems = clothesRepository.getClothingItemsForOutfit(outfitId)
-        }
-
-        return clothingItems
-    }
-
-    fun deleteEveryClothingItem() {
-        viewModelScope.launch(Dispatchers.IO) {
-            clothesRepository.deleteEveryClothingItem()
-        }
-    }
+//    fun deleteEveryClothingItem() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            clothesRepository.deleteEveryClothingItem()
+//        }
+//    }
+     //Метод в ViewModel, который вызывает метод репозитория для удаления выбранных ClothingItem
+//    fun deleteSelectedClothingItems() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            clothesRepository.deleteSelectedClothingItems()
+//        }
+//    }
 
 
     // Outfits

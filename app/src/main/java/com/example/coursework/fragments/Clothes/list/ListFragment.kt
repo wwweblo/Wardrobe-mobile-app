@@ -1,5 +1,6 @@
 package com.example.coursework.fragments.Clothes.list
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -33,6 +34,7 @@ class ListFragment : Fragment() {
     private lateinit var addButton: FloatingActionButton
     private  lateinit var searchButton: ImageButton
     private  lateinit var sortButton: ImageButton
+    private lateinit var deleteButton:ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +62,8 @@ class ListFragment : Fragment() {
         sortButton = view.findViewById(R.id.list_sort_button)
         canselButton = view.findViewById(R.id.list_cansel_button)
         addToOutFitButton = view.findViewById(R.id.list_more_button)
+        deleteButton = view.findViewById(R.id.list_delete_button)
+
 
         //Добавление
         addButton.setOnClickListener {
@@ -86,6 +90,21 @@ class ListFragment : Fragment() {
         //Отмена выбора
         canselButton.setOnClickListener {
             adapter.resetSelection()
+            updateAdapter()
+        }
+
+        deleteButton.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
+                finallyDeleteItems()
+            }
+            builder.setNegativeButton(getString(R.string.no)) { _, _ -> }
+//            builder.setTitle("${getString(R.string.delete)} ${mClothesViewModel.getSelectedClothingItemCount()}?")
+//            builder.setMessage("${getString(R.string.Are_you_sure_you_want_to_delete)} ${mClothesViewModel.getSelectedClothingItemCount()} ${getString(R.string.items)}?")
+            val selectedCount = adapter.getSelectedItems().size
+            builder.setTitle("${getString(R.string.delete)} $selectedCount?")
+            builder.setMessage("${getString(R.string.Are_you_sure_you_want_to_delete)} $selectedCount ${getString(R.string.items)}?")
+            builder.create().show()
         }
 
         //Добавление в образ
@@ -94,7 +113,8 @@ class ListFragment : Fragment() {
             val allClothingItems = mClothesViewModel.readAllClothes.value?: emptyList()
 
             // Отфильтровываем список, оставляя только выбранные элементы
-            val selectedClothingItems = allClothingItems.filter { it.isSelected?: false }
+            //val selectedClothingItems = allClothingItems.filter { it.isSelected?: false }
+            val selectedClothingItems = adapter.getSelectedItems()
 
             // Если массив выбранных элементов не пустой, формируем и передаем его
             if (selectedClothingItems.isNotEmpty()) {
@@ -119,7 +139,14 @@ class ListFragment : Fragment() {
         updateAdapter()
     }
 
+    private fun finallyDeleteItems(){
+        val selected = adapter.getSelectedItems()
+        selected.forEach { item ->
+            mClothesViewModel.deleteClothingItem(item)
+        }
 
+        //mClothesViewModel.deleteSelectedClothingItems()
+    }
 
     private fun updateAdapter(){
         mClothesViewModel.readAllClothes.observe(viewLifecycleOwner, Observer { clothingItems ->

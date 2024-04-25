@@ -69,18 +69,18 @@
         android:id="@+id/list_search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
         android:backgroundTint="@color/light_gray"
         android:src="@drawable/ic_search"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintEnd_toStartOf="@+id/list_sort_button" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/list_cansel_button"
         style="@style/gray_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="198dp"
+        android:layout_height="46dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="10dp"
         android:text="@string/cansel_selection"
@@ -96,6 +96,17 @@
         android:backgroundTint="@color/light_gray"
         android:src="@drawable/ic_outfits"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintEnd_toStartOf="@+id/list_search_button" />
+        app:layout_constraintEnd_toStartOf="@+id/list_delete_button" />
+
+    <ImageButton
+        android:id="@+id/list_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/light_gray"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toStartOf="@+id/list_sort_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

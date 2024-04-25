@@ -34,8 +34,6 @@ class AddToOutfitFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         // ViewModel
         mClothesViewModel = ViewModelProvider(requireActivity()).get(ClothesViewModel::class.java)
 
@@ -55,7 +53,7 @@ class AddToOutfitFragment : Fragment(){
         else
         {
             selectedClothingItems.forEach { item ->
-                item.isSelected = false
+                //item.isSelected = false
                 mClothesViewModel.updateClothingItem(item)
             }
 

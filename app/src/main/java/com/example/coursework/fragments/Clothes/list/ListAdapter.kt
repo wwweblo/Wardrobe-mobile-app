@@ -17,7 +17,7 @@ import com.example.coursework.viewModel.ClothesViewModel
 class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     private val clothingItems = mutableListOf<ClothingItem>()
-
+    private val selectedItems = mutableListOf<ClothingItem>()
 
     companion object {
         private const val TITLE_LENGTH_LIMIT = 25
@@ -26,16 +26,6 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val checkboxSelected: CheckBox = itemView.findViewById(R.id.custom_row_select)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.custom_row_list, parent, false)
-        return MyViewHolder(itemView)
-    }
-
-    override fun getItemCount(): Int {
-        return clothingItems.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -67,15 +57,28 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
 
             // Обработчик нажатия на CheckBox
             holder.checkboxSelected.setOnCheckedChangeListener { _, isChecked ->
-                // Обновление значения в базе данных
-                currentItem.isSelected = isChecked
-                // Вызов метода toggleClothingItemSelection из ViewModel
-                viewModel.toggleClothingItemSelection(currentItem.id)
-                Log.d("ListAdapter", "currentItem = (title->${currentItem.title}, isSelected->${currentItem.isSelected})")
-
+                // Обновление значения в списке выбранных элементов
+                if (isChecked) {
+                    selectedItems.add(currentItem)
+                } else {
+                    selectedItems.remove(currentItem)
+                }
+                Log.d("ListAdapter", "Selected items: $selectedItems")
             }
         }
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.custom_row_list, parent, false)
+        return MyViewHolder(itemView)
+    }
+
+    override fun getItemCount(): Int {
+        return clothingItems.size
+    }
+
+
 
     fun setData(clothingItems: List<ClothingItem>) {
         this.clothingItems.clear()
@@ -90,8 +93,13 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
             tv.text = text
         }
     }
+
+    fun getSelectedItems(): List<ClothingItem> {
+        return selectedItems.toList()
+    }
+
     fun resetSelection() {
-        clothingItems.forEach { it.isSelected = false }
+        selectedItems.clear()
         notifyDataSetChanged()
     }
 }
