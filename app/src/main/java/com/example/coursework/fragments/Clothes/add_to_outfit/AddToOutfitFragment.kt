@@ -53,7 +53,7 @@ class AddToOutfitFragment : Fragment(){
         else
         {
             selectedClothingItems.forEach { item ->
-                item.isSelected = false
+                //item.isSelected = false
                 mClothesViewModel.updateClothingItem(item)
             }
 

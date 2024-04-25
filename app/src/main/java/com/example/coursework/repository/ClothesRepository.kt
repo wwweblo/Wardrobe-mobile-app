@@ -41,24 +41,24 @@ class ClothesRepository(private val dao: ClothesDao) {
         return dao.getClothingItemsSortedByDateUpdated()
     }
 
-    suspend fun toggleClothingItemSelection(id: Int) {
-        dao.toggleClothingItemSelection(id)
-    }
-
-    suspend fun isAnyItemSelected():Boolean{
-        return  dao.isAnyItemSelected()
-    }
-
+//    suspend fun toggleClothingItemSelection(id: Int) {
+//        dao.toggleClothingItemSelection(id)
+//    }
+//
+//    suspend fun isAnyItemSelected():Boolean{
+//        return  dao.isAnyItemSelected()
+//    }
+//
     fun isImagePathUsed(imagePath: String?): Boolean {
         return dao.isImagePathUsed(imagePath)
     }
-
-    suspend fun getSelectedClothingItemCount(): Int {
-        return dao.getSelectedClothingItemCount()
-    }
-
-    // Метод в репозитории для вызова соответствующего метода DAO
-    suspend fun deleteSelectedClothingItems() {
-        dao.deleteSelectedClothingItems()
-    }
+//
+//    suspend fun getSelectedClothingItemCount(): Int {
+//        return dao.getSelectedClothingItemCount()
+//    }
+//
+//    // Метод в репозитории для вызова соответствующего метода DAO
+//    suspend fun deleteSelectedClothingItems() {
+//        dao.deleteSelectedClothingItems()
+//    }
 }

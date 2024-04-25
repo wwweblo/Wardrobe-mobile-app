@@ -26,28 +26,6 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val checkboxSelected: CheckBox = itemView.findViewById(R.id.custom_row_select)
-
-        init {
-            checkboxSelected.setOnCheckedChangeListener { _, isChecked ->
-                val currentItem = clothingItems[adapterPosition]
-                if (isChecked) {
-                    selectedItems.add(currentItem)
-                } else {
-                    selectedItems.remove(currentItem)
-                }
-                Log.d("ListAdapter", "Selected items: $selectedItems")
-            }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.custom_row_list, parent, false)
-        return MyViewHolder(itemView)
-    }
-
-    override fun getItemCount(): Int {
-        return clothingItems.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -75,9 +53,32 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
             }
 
             // Установка значения CheckBox
-            //holder.checkboxSelected.isChecked = currentItem.isSelected ?: false
+            holder.checkboxSelected.isChecked = currentItem.isSelected ?: false
+
+            // Обработчик нажатия на CheckBox
+            holder.checkboxSelected.setOnCheckedChangeListener { _, isChecked ->
+                // Обновление значения в списке выбранных элементов
+                if (isChecked) {
+                    selectedItems.add(currentItem)
+                } else {
+                    selectedItems.remove(currentItem)
+                }
+                Log.d("ListAdapter", "Selected items: $selectedItems")
+            }
         }
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.custom_row_list, parent, false)
+        return MyViewHolder(itemView)
+    }
+
+    override fun getItemCount(): Int {
+        return clothingItems.size
+    }
+
+
 
     fun setData(clothingItems: List<ClothingItem>) {
         this.clothingItems.clear()
@@ -98,7 +99,6 @@ class ListAdapter(private val viewModel: ClothesViewModel) : RecyclerView.Adapte
     }
 
     fun resetSelection() {
-        //clothingItems.forEach { it.isSelected = false }
         selectedItems.clear()
         notifyDataSetChanged()
     }

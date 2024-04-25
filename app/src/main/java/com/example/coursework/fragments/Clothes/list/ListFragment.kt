@@ -90,6 +90,7 @@ class ListFragment : Fragment() {
         //Отмена выбора
         canselButton.setOnClickListener {
             adapter.resetSelection()
+            updateAdapter()
         }
 
         deleteButton.setOnClickListener {

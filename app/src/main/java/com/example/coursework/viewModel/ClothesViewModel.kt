@@ -102,32 +102,32 @@ class ClothesViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun toggleClothingItemSelection(id: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            clothesRepository.toggleClothingItemSelection(id)
-        }
-    }
-    suspend fun isAnyItemSelected(): Boolean {
-        return clothesRepository.isAnyItemSelected()
-    }
+//    fun toggleClothingItemSelection(id: Int) {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            clothesRepository.toggleClothingItemSelection(id)
+//        }
+//   }
+//    suspend fun isAnyItemSelected(): Boolean {
+//        return clothesRepository.isAnyItemSelected()
+//    }
+//
+//    fun getSelectedClothingItemCount(): Int {
+//        return runBlocking(Dispatchers.IO) {
+//            clothesRepository.getSelectedClothingItemCount()
+//        }
+//    }
 
-    fun getSelectedClothingItemCount(): Int {
-        return runBlocking(Dispatchers.IO) {
-            clothesRepository.getSelectedClothingItemCount()
-        }
-    }
-
-    fun deleteEveryClothingItem() {
-        viewModelScope.launch(Dispatchers.IO) {
-            clothesRepository.deleteEveryClothingItem()
-        }
-    }
-    // Метод в ViewModel, который вызывает метод репозитория для удаления выбранных ClothingItem
-    fun deleteSelectedClothingItems() {
-        viewModelScope.launch(Dispatchers.IO) {
-            clothesRepository.deleteSelectedClothingItems()
-        }
-    }
+//    fun deleteEveryClothingItem() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            clothesRepository.deleteEveryClothingItem()
+//        }
+//    }
+     //Метод в ViewModel, который вызывает метод репозитория для удаления выбранных ClothingItem
+//    fun deleteSelectedClothingItems() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            clothesRepository.deleteSelectedClothingItems()
+//        }
+//    }
 
 
     // Outfits
