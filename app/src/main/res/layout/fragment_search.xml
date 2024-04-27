@@ -36,7 +36,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="25dp"
         android:ems="10"
-        android:hint="Search"
+        android:hint="@android:string/search_go"
         android:inputType="text"
         android:textSize="20sp"
         android:textStyle="bold"
