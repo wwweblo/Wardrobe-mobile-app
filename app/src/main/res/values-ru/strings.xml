@@ -38,6 +38,7 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="add">Добавить</string>
+    <string name="search">Поиск</string>
 
     <string name="style">Стиль</string>
     <string name="update">Обновить</string>

@@ -47,7 +47,7 @@ class OutfitSearchFragment : Fragment() {
         // Кнопка назад
         val backButton = view.findViewById<FloatingActionButton>(R.id.search_back_button)
         backButton.setOnClickListener{
-            findNavController().navigate(R.id.action_searchFragment_to_listFragment)
+            findNavController().popBackStack()
         }
 
         showKeyboard()
